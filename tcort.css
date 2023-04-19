@@ -1,0 +1,176 @@
+/*
+    Copyright (c) 2023 Thomas Cort <linuxgeek@gmail.com>
+
+    Permission to use, copy, modify, and distribute this software for any
+    purpose with or without fee is hereby granted, provided that the above
+    copyright notice and this permission notice appear in all copies.
+
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+/*
+    Version 2023.04.18a
+ */
+
+body {
+	font-family: "Trebuchet MS", Verdana, "Lucida Sans", Arial, Geneva, Helvetica, Helv, "Myriad Web", Syntax, sans-serif;
+    font-size: 18px;
+    text-align: left;
+    line-height: 1.69;
+    max-width: 69em;
+    margin: 32px auto;
+    color: #454545;
+    background: #f2f2f2;
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+h1, h2, h3 {
+    line-height: 1.2345;
+}
+
+h1 {
+    font-weight: bold;
+    color: #454545;
+}
+
+h2, h3 {
+    color: #707070;
+	border: 1px solid #cccccc;
+	border-width: 0px 0px 1px 0px;
+}
+
+p {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+a {
+    color: black;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #ff0033;
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+th, td {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #eeeeee;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+tbody tr:hover {
+    background-color: #aaaaaa;
+}
+
+input[type=file],
+input[type=text],
+input[type=button],
+input[type=submit],
+input[type=reset],
+select,
+button,
+textarea {
+    border: 2px solid grey;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    background-color: #f8f8f8;
+}
+
+textarea {
+    font-family: "Trebuchet MS", Verdana, "Lucida Sans", Arial, Geneva, Helvetica, Helv, "Myriad Web", Syntax, sans-serif;
+    font-size: 18px;
+    line-height: 1.69;
+    width: 100%;
+    resize: none;
+}
+
+.hidden {
+    display: none;
+}
+
+progress {
+    border-radius: 4px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
+    height: 20px;
+    position: relative;
+    display: block;
+}
+
+.navtab {
+    border-radius: 4px 4px 0px 0px;
+    border: 2px solid grey;
+    padding: 6px 10px;
+    margin: 0;
+    box-sizing: border-box;
+    background: #aaaaaa;
+    color: #454545;
+}
+
+.navtab:hover  {
+    background: #454545;
+    color: #f2f2f2;
+}
+
+.activetab {
+    background: #f2f2f2;
+    border-bottom: 0px;
+}
+
+.comma-separated-list {
+    display: inline;
+    list-style: none;
+    padding: 0px;
+}
+
+.comma-separated-list li {
+    display: inline;
+}
+
+.comma-separated-list li:not(:first-child)::before {
+  content: ', ';
+}
+
+@media print {
+    body {
+        max-width: none;
+    }
+}
+
+.card {
+    color: white;
+    padding: 10px;
+}
+
+.cards {
+    margin: 0 auto;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}

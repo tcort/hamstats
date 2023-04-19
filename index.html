@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <!--
+            /*
+                Copyright (c) 2023 Thomas Cort <linuxgeek@gmail.com>
+
+                Permission to use, copy, modify, and distribute this software for any
+                purpose with or without fee is hereby granted, provided that the above
+                copyright notice and this permission notice appear in all copies.
+
+                THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+                WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+                MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+                ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+                WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+                ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+                OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+            */
+        -->
+        <meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Ham Stats</title>
+
+        <link rel="icon" href="favicon.ico" />
+        <link rel="stylesheet" href="tcort.css" />
+
+    </head>
+    <body>
+        <header>
+            <h1>Ham Stats</h1>
+            <p>
+                Gain insight into your amateur radio logs. This site is free and all computations run in the browser. No data is sent to the server.
+            </p>
+        </header>
+        <div>
+            <form name="file-chooser">
+                ADIF File <input type="file" name="adif_file" accept=".adi,.adif" required />
+                <input type="submit" value="Analyze" />
+            </form>
+        </div>
+        <div id="results" class="hidden">
+            <div class="cards">
+                <div class="card">
+                    <h2>Bands</h2>
+                    <canvas id="band"></canvas>
+                </div>
+                <div class="card">
+                    <h2>Modes</h2>
+                    <canvas id="mode"></canvas>
+                </div>
+                <div class="card">
+                    <h2>Rigs</h2>
+                    <canvas id="my_rig"></canvas>
+                </div>
+                <div class="card">
+                    <h2>Antennas</h2>
+                    <canvas id="my_antenna"></canvas>
+                </div>
+                <div class="card">
+                    <h2>Years</h2>
+                    <canvas id="year"></canvas>
+                </div>
+                <div class="card">
+                    <h2>Months of Year</h2>
+                    <canvas id="month"></canvas>
+                </div>
+                <div class="card">
+                    <h2>Day of Week</h2>
+                    <canvas id="isoWeekday"></canvas>
+                </div>
+                <div class="card">
+                    <h2>Time of Day</h2>
+                    <canvas id="hour"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                Copyright &copy; 2023 Thomas Cort (<a href="https://www.va2nw.ca">VA2NW</a>)
+            </p>
+        </footer>
+
+        <script src="jquery.min.js"></script>
+        <script src="moment.js"></script>
+        <script src="chart.umd.js"></script>
+        <script src="hamstats.js"></script>
+    </body>
+</html>
