@@ -3537,7 +3537,13 @@ $(function () {
                     plotIt(stats);
                 });
 
-                parser.parse(chunks.join(''));
+                try {
+                    $('#error').text('');
+                    parser.parse(chunks.join(''));
+                } catch (err) {
+                    $('#error').text('parse error: ' + err.message + ((err.hasOwnProperty('field') && err.hasOwnProperty('value')) ? ' ' + err.field + '=' + err.value : ''));
+                }
+
                 return;
             }
             chunks.push(decoder.decode(value));
