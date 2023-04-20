@@ -3158,6 +3158,12 @@ class QSO {
     }
 
     constructor(obj, bytesConsumed = 0) {
+
+        if (obj?.MODE === 'DSTAR' || obj?.MODE === 'C4FM') {
+            obj.SUBMOD = obj.MODE;
+            obj.MODE = 'DIGITALVOICE';
+        }
+
         QSO.defs.filter(def => def.fieldName in obj).filter(def => obj[def.fieldName] !== '' && obj[def.fieldName] !== null && obj[def.fieldName] !== undefined).forEach(def => {
             const value = def.normalize(obj[def.fieldName]);
             def.validate(value);
