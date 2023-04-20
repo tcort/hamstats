@@ -23,10 +23,28 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
+        <meta name="author" content="Thomas Cort" />
+        <meta name="description" content="Gain insight into your amateur radio logs." />
+        <meta name="keywords" content="amateur, radio, ham, stats, adif, statistics, logs, log, file" />
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:url" content="https://www.hamstats.com/">
+        <meta name="twitter:title" content="Ham Stats" />>
+        <meta name="twitter:description" content="Gain insight into your amateur radio logs." />
+
+        <meta property="og:title" content="Ham Stats" />
+        <meta property="og:description" content="Gain insight into your amateur radio logs." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.hamstats.com/" />
+        <meta property="og:image" content="https://www.tcort.dev/img/tcort.png" />
+        <meta property="og:site_name" content="Ham Stats" />
+
+
         <title>Ham Stats</title>
 
         <link rel="icon" href="favicon.ico" />
         <link rel="stylesheet" href="tcort.css" />
+        <link rel="stylesheet" href="hamstats.css" />
 
     </head>
     <body>
@@ -47,6 +65,39 @@
         <div id="error"></div>
         <div id="results" class="hidden">
             <div class="cards">
+                <div class="card">
+                    <h2>ADIF File</h2>
+                    <table> 
+                        <tr>
+                            <th>Name</th>
+                            <td><span id="adif_filename"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Size</th>
+                            <td><span id="adif_filesize"></span> bytes</td>
+                        </tr>
+                        <tr>
+                            <th>QSOs</th>
+                            <td><span id="nqso"></span></td>
+                        </tr>
+                        <tr>
+                            <th>First QSO</th>
+                            <td><span id="date_first_qso"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Last QSO</th>
+                            <td><span id="date_last_qso"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Created by</th>
+                            <td><span id="header_progname"></span> v<span id="header_progver"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Processing time</th>
+                            <td><span id="runtime"></span> seconds</td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="card">
                     <h2>Bands</h2>
                     <canvas id="band"></canvas>
@@ -79,6 +130,10 @@
                     <h2>Time of Day</h2>
                     <canvas id="hour"></canvas>
                 </div>
+                <div class="card">
+                    <h2>United States</h2>
+                    <div id="usmap"></div>
+                </div>
             </div>
         </div>
 
@@ -88,7 +143,10 @@
             </p>
         </footer>
 
+        <script src="raphael.js"></script>
         <script src="jquery.min.js"></script>
+        <script src="color.jquery.js"></script>
+        <script src="jquery.usmap.js"></script>
         <script src="moment.js"></script>
         <script src="chart.umd.js"></script>
         <script src="hamstats.js"></script>

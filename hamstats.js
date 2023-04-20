@@ -3254,7 +3254,7 @@ const charts = [];
 
 function contactsByHour(stats) {
     const labels = (new Array(24)).fill().map((x,i) => i);
-    const data = labels.map(label => stats.timeseries.hour.total[label] ?? 0);
+    const data = labels.map(label => stats.timeseries.hour[label] ?? 0);
     charts.push(
         new Chart(
             document.getElementById('hour'),
@@ -3278,8 +3278,8 @@ function contactsByHour(stats) {
 }
 
 function contactsByYear(stats) {
-    const labels = Object.keys(stats.timeseries.year.total).sort();
-    const data = labels.map(label => stats.timeseries.year.total[label]);
+    const labels = Object.keys(stats.timeseries.year).sort();
+    const data = labels.map(label => stats.timeseries.year[label]);
     charts.push(
         new Chart(
             document.getElementById('year'),
@@ -3303,12 +3303,12 @@ function contactsByYear(stats) {
 }
 
 function contactsByMonth(stats) {
-    const labels = Object.keys(stats.timeseries.month.total).sort((x, y) => {
+    const labels = Object.keys(stats.timeseries.month).sort((x, y) => {
         if (x === y) return 0;
         else if (timeseriesLabels.month.indexOf(x) < timeseriesLabels.month.indexOf(y)) return -1;
         else return 1;
     });
-    const data = labels.map(label => stats.timeseries.month.total[label]);
+    const data = labels.map(label => stats.timeseries.month[label]);
     charts.push(
         new Chart(
             document.getElementById('month'),
@@ -3332,12 +3332,12 @@ function contactsByMonth(stats) {
 }
 
 function contactsByIsoWeekday(stats) {
-    const labels = Object.keys(stats.timeseries.isoWeekday.total).sort((x, y) => {
+    const labels = Object.keys(stats.timeseries.isoWeekday).sort((x, y) => {
         if (x === y) return 0;
         else if (timeseriesLabels.isoWeekday.indexOf(x) < timeseriesLabels.isoWeekday.indexOf(y)) return -1;
         else return 1;
     });
-    const data = labels.map(label => stats.timeseries.isoWeekday.total[label]);
+    const data = labels.map(label => stats.timeseries.isoWeekday[label]);
     charts.push(
         new Chart(
             document.getElementById('isoWeekday'),
@@ -3361,8 +3361,8 @@ function contactsByIsoWeekday(stats) {
 }
 
 function contactsByMode(stats) {
-    const labels = Object.keys(stats.tally.MODE.total).sort();
-    const data = labels.map(label => stats.tally.MODE.total[label]);
+    const labels = Object.keys(stats.tally.MODE).sort();
+    const data = labels.map(label => stats.tally.MODE[label]);
     charts.push(
         new Chart(
             document.getElementById('mode'),
@@ -3383,8 +3383,8 @@ function contactsByMode(stats) {
 }
 
 function contactsByMyRig(stats) {
-    const labels = Object.keys(stats.tally.MY_RIG.total).sort();
-    const data = labels.map(label => stats.tally.MY_RIG.total[label]);
+    const labels = Object.keys(stats.tally.MY_RIG).sort();
+    const data = labels.map(label => stats.tally.MY_RIG[label]);
     charts.push(
         new Chart(
             document.getElementById('my_rig'),
@@ -3405,8 +3405,8 @@ function contactsByMyRig(stats) {
 }
 
 function contactsByMyAntenna(stats) {
-    const labels = Object.keys(stats.tally.MY_ANTENNA.total).sort();
-    const data = labels.map(label => stats.tally.MY_ANTENNA.total[label]);
+    const labels = Object.keys(stats.tally.MY_ANTENNA).sort();
+    const data = labels.map(label => stats.tally.MY_ANTENNA[label]);
     charts.push(
         new Chart(
             document.getElementById('my_antenna'),
@@ -3427,8 +3427,8 @@ function contactsByMyAntenna(stats) {
 }
 
 function contactsByBand(stats) {
-    const labels = Object.keys(stats.tally.BAND.total).sort();
-    const data = labels.map(label => stats.tally.BAND.total[label]);
+    const labels = Object.keys(stats.tally.BAND).sort();
+    const data = labels.map(label => stats.tally.BAND[label]);
     charts.push(
         new Chart(
             document.getElementById('band'),
@@ -3448,15 +3448,41 @@ function contactsByBand(stats) {
     );
 }
 
-function plotIt(stats) {
+function placesUsa(stats) {
+
+    $('#usmap').usmap({
+        showLabels: false,
+        stateStyles: { fill: '#ffffff' },
+        stateHoverStyles: { fill: '#ffffaa' },
+        'stateSpecificStyles': Object.keys(stats.places.usa).reduce((result, state) => {
+            result[state] = { fill: '#aaffaa' };
+            return result;
+        }, {}),
+    });
+}
+
+function plotIt(stats, adif_file, header, startTime) {
 
     while (charts.length > 0) {
         const chart = charts.pop();
         chart.destroy();
     }
 
+    const endTime = new Date();
+    const runtime_ms = endTime.getTime() - startTime.getTime();
+
+    $('#adif_filename').text(adif_file.name);
+    $('#adif_filesize').text(adif_file.size);
+    $('#header_progname').text(header.PROGRAMID ?? 'unknown application');
+    $('#header_progver').text(header.PROGRAMVERSION ?? 'unknown version');
+    $('#runtime').text(moment.duration(runtime_ms).asSeconds());
+    $('#nqso').text(stats.nqso);
+    $('#date_first_qso').text(stats.date_first_qso ? stats.date_first_qso.format('YYYY-MM-DD') : 'none');
+    $('#date_last_qso').text(stats.date_last_qso ? stats.date_last_qso.format('YYYY-MM-DD') : 'none');
+
     $('#spinner').removeClass('spinner');
     $('#results').removeClass('hidden');
+
     contactsByYear(stats);
     contactsByMonth(stats);
     contactsByIsoWeekday(stats);
@@ -3465,14 +3491,21 @@ function plotIt(stats) {
     contactsByBand(stats);
     contactsByMyRig(stats);
     contactsByMyAntenna(stats);
+
+    placesUsa(stats);
+
 }
 
 
 
 
 $(function () {
+
+
     $('form[name="file-chooser"]').on('submit', e => {
         e.preventDefault();
+
+        const startTime = new Date();
 
         $('#results').addClass('hidden');
         $('#spinner').addClass('spinner');
@@ -3484,6 +3517,7 @@ $(function () {
         }
 
         const [ adif_file ] = files;
+console.log(adif_file);
 
         const chunks = [];
 
@@ -3495,23 +3529,29 @@ $(function () {
 
                 const header = {};
                 const stats = {
+                    nqso: 0,
+                    date_first_qso: null,
+                    date_last_qso: null,
                     tally: {
-                        BAND: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        CQZ: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        MODE: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        MY_RIG: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        MY_ANTENNA: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        ITU: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        MY_SIG: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        SIG: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
+                        BAND: new Map(),
+                        CQZ: new Map(),
+                        MODE: new Map(),
+                        MY_RIG: new Map(),
+                        MY_ANTENNA: new Map(),
+                        ITU: new Map(),
+                        MY_SIG: new Map(),
+                        SIG: new Map(),
                     },
                     timeseries: {
-                        year: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        month: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        dayOfYear: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        isoWeekday: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        date: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
-                        hour: { confirmed: new Map(), unconfirmed: new Map(), total: new Map() },
+                        year: new Map(),
+                        month: new Map(),
+                        dayOfYear: new Map(),
+                        isoWeekday: new Map(),
+                        date: new Map(),
+                        hour: new Map(),
+                    },
+                    places: {
+                        usa: new Map(),
                     },
                 };
 
@@ -3521,14 +3561,13 @@ $(function () {
 
                 parser.addEventListener('QSO', e => {
                     const qso = e.detail;
-                    const qslStatus = `${qso.QSL_RCVD}`.trim().toLowerCase() === 'y' ? 'confirmed' : 'unconfirmed';
+
+                    stats.nqso++;
 
                     // fill in stats.tally
                     Object.keys(stats.tally).filter(key => key in qso).forEach(key => {
-                        const oldValue = stats.tally[key][qslStatus].get(qso[key]) ?? 0;
-                        stats.tally[key][qslStatus].set(qso[key], oldValue + 1);
-                        const oldTotal = stats.tally[key].total.get(qso[key]) ?? 0;
-                        stats.tally[key].total.set(qso[key], oldTotal + 1);
+                        const oldValue = stats.tally[key].get(qso[key]) ?? 0;
+                        stats.tally[key].set(qso[key], oldValue + 1);
                     });
 
                     // fill in stats.timeseries
@@ -3544,29 +3583,43 @@ $(function () {
 
                     const ts = moment(`${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`, moment.ISO_8601);
 
+                    if (stats.date_first_qso === null || ts.isBefore(stats.date_first_qso)) {
+                        stats.date_first_qso = ts;
+                    }
+                    if (stats.date_last_qso === null || ts.isAfter(stats.date_last_qso)) {
+                        stats.date_last_qso = ts;
+                    }
+
                     Object.keys(stats.timeseries).forEach(key => {
                         const label = key in timeseriesLabels ? timeseriesLabels[key][ts[key]()] : ts[key]();
-                        const oldValue = stats.timeseries[key][qslStatus].get(label) ?? 0;
-                        stats.timeseries[key][qslStatus].set(label, oldValue + 1);
-                        const oldTotal = stats.timeseries[key].total.get(label) ?? 0;
-                        stats.timeseries[key].total.set(label, oldTotal + 1);
+                        const oldValue = stats.timeseries[key].get(label) ?? 0;
+                        stats.timeseries[key].set(label, oldValue + 1);
                     }); 
 
+                    switch (qso.DXCC) {
+                        case '291':
+                            if (typeof qso.STATE === 'string' && qso.STATE !== '') {
+                                const oldValue = stats.places.usa.get(qso.STATE) ?? 0;
+                                stats.places.usa.set(qso.STATE, oldValue + 1);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
 
                 });
 
                 parser.addEventListener('done', e => {
                     Object.keys(stats.tally).forEach(key => {
-                        [ 'total', 'confirmed', 'unconfirmed' ].forEach(qslStatus => {
-                            stats.tally[key][qslStatus] = Object.fromEntries(stats.tally[key][qslStatus]);
-                        });
+                        stats.tally[key] = Object.fromEntries(stats.tally[key]);
                     });
                     Object.keys(stats.timeseries).forEach(key => {
-                        [ 'total', 'confirmed', 'unconfirmed' ].forEach(qslStatus => {
-                            stats.timeseries[key][qslStatus] = Object.fromEntries(stats.timeseries[key][qslStatus]);
-                        });
+                        stats.timeseries[key] = Object.fromEntries(stats.timeseries[key]);
                     });
-                    plotIt(stats);
+                    Object.keys(stats.places).forEach(key => {
+                        stats.places[key] = Object.fromEntries(stats.places[key]);
+                    });
+                    plotIt(stats, adif_file, header, startTime);
                 });
 
                 try {
