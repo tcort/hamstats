@@ -3255,47 +3255,53 @@ const charts = [];
 function contactsByHour(stats) {
     const labels = (new Array(24)).fill().map((x,i) => i);
     const data = labels.map(label => stats.timeseries.hour.total[label] ?? 0);
-    charts.push(new Chart(
-        document.getElementById('hour'),
-        {
-            type: 'bar',
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: 'Contacts',
-                        data,
-                    }
-                ]
-            },
-            options: {
-                responsive: true
+    charts.push(
+        new Chart(
+            document.getElementById('hour'),
+            {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true
+                }
             }
-        }
-    ));
+        )
+    );
 }
+
 function contactsByYear(stats) {
     const labels = Object.keys(stats.timeseries.year.total).sort();
     const data = labels.map(label => stats.timeseries.year.total[label]);
-    charts.push(new Chart(
-        document.getElementById('year'),
-        {
-            type: 'bar',
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: 'Contacts',
-                        data,
-                    }
-                ]
-            },
-            options: {
-                responsive: true
+    charts.push(
+        new Chart(
+            document.getElementById('year'),
+            {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true
+                }
             }
-        }
-    ));
+        )
+    );
 }
+
 function contactsByMonth(stats) {
     const labels = Object.keys(stats.timeseries.month.total).sort((x, y) => {
         if (x === y) return 0;
@@ -3303,24 +3309,26 @@ function contactsByMonth(stats) {
         else return 1;
     });
     const data = labels.map(label => stats.timeseries.month.total[label]);
-    charts.push(new Chart(
-        document.getElementById('month'),
-        {
-            type: 'bar',
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: 'Contacts',
-                        data,
-                    }
-                ]
-            },
-            options: {
-                responsive: true
+    charts.push(
+        new Chart(
+            document.getElementById('month'),
+            {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true
+                }
             }
-        }
-    ));
+        )
+    );
 }
 
 function contactsByIsoWeekday(stats) {
@@ -3330,101 +3338,114 @@ function contactsByIsoWeekday(stats) {
         else return 1;
     });
     const data = labels.map(label => stats.timeseries.isoWeekday.total[label]);
-    charts.push(new Chart(
-        document.getElementById('isoWeekday'),
-        {
-            type: 'bar',
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: 'Contacts',
-                        data,
-                    }
-                ]
-            },
-            options: {
-                responsive: true
+    charts.push(
+        new Chart(
+            document.getElementById('isoWeekday'),
+            {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true
+                }
             }
-        }
-    ));
+        )
+    );
 }
 
 function contactsByMode(stats) {
     const labels = Object.keys(stats.tally.MODE.total).sort();
     const data = labels.map(label => stats.tally.MODE.total[label]);
-    charts.push(new Chart(
-        document.getElementById('mode'),
-        {
-            type: 'doughnut',
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: 'Contacts',
-                        data,
-                    }
-                ]
+    charts.push(
+        new Chart(
+            document.getElementById('mode'),
+            {
+                type: 'doughnut',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                }
             }
-        }
-    ));
+        )
+    );
 }
+
 function contactsByMyRig(stats) {
     const labels = Object.keys(stats.tally.MY_RIG.total).sort();
     const data = labels.map(label => stats.tally.MY_RIG.total[label]);
-    charts.push(new Chart(
-        document.getElementById('my_rig'),
-        {
-            type: 'doughnut',
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: 'Contacts',
-                        data,
-                    }
-                ]
+    charts.push(
+        new Chart(
+            document.getElementById('my_rig'),
+            {
+                type: 'doughnut',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                }
             }
-        }
-    ));
+        )
+    );
 }
+
 function contactsByMyAntenna(stats) {
     const labels = Object.keys(stats.tally.MY_ANTENNA.total).sort();
     const data = labels.map(label => stats.tally.MY_ANTENNA.total[label]);
-    charts.push(new Chart(
-        document.getElementById('my_antenna'),
-        {
-            type: 'doughnut',
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: 'Contacts',
-                        data,
-                    }
-                ]
+    charts.push(
+        new Chart(
+            document.getElementById('my_antenna'),
+            {
+                type: 'doughnut',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                }
             }
-        }
-    ));
+        )
+    );
 }
+
 function contactsByBand(stats) {
     const labels = Object.keys(stats.tally.BAND.total).sort();
     const data = labels.map(label => stats.tally.BAND.total[label]);
-    charts.push(new Chart(
-        document.getElementById('band'),
-        {
-            type: 'doughnut',
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: 'Contacts',
-                        data,
-                    }
-                ]
+    charts.push(
+        new Chart(
+            document.getElementById('band'),
+            {
+                type: 'doughnut',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                }
             }
-        }
-    ));
+        )
+    );
 }
 
 function plotIt(stats) {
