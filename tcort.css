@@ -174,3 +174,18 @@ progress {
     gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
+
+.spinner {
+    border: 2.25em solid #aaaaaa;
+    border-top: 2.25em solid #f2f2f2;
+    border-radius: 50%;
+    width: 5em;
+    height: 5em;
+    animation: spin 2s linear infinite;
+    margin: 0px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

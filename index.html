@@ -36,12 +36,14 @@
                 Gain insight into your amateur radio logs. This site is free and all computations run in the browser. No data is sent to the server.
             </p>
         </header>
-        <div>
+        <div> 
             <form name="file-chooser">
-                ADIF File <input type="file" name="adif_file" accept=".adi,.adif" required />
+                <label for="adif_file">ADIF File</label>
+                <input type="file" name="adif_file" accept=".adi,.adif" required />
                 <input type="submit" value="Analyze" />
             </form>
         </div>
+        <div id="spinner" class=""></div>
         <div id="error"></div>
         <div id="results" class="hidden">
             <div class="cards">
