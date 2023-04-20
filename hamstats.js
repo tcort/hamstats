@@ -3250,11 +3250,12 @@ const timeseriesLabels = {
     month: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 };
 
+const charts = [];
 
 function contactsByHour(stats) {
     const labels = (new Array(24)).fill().map((x,i) => i);
     const data = labels.map(label => stats.timeseries.hour.total[label] ?? 0);
-    new Chart(
+    charts.push(new Chart(
         document.getElementById('hour'),
         {
             type: 'bar',
@@ -3271,12 +3272,12 @@ function contactsByHour(stats) {
                 responsive: true
             }
         }
-    );
+    ));
 }
 function contactsByYear(stats) {
     const labels = Object.keys(stats.timeseries.year.total).sort();
     const data = labels.map(label => stats.timeseries.year.total[label]);
-    new Chart(
+    charts.push(new Chart(
         document.getElementById('year'),
         {
             type: 'bar',
@@ -3293,7 +3294,7 @@ function contactsByYear(stats) {
                 responsive: true
             }
         }
-    );
+    ));
 }
 function contactsByMonth(stats) {
     const labels = Object.keys(stats.timeseries.month.total).sort((x, y) => {
@@ -3302,7 +3303,7 @@ function contactsByMonth(stats) {
         else return 1;
     });
     const data = labels.map(label => stats.timeseries.month.total[label]);
-    new Chart(
+    charts.push(new Chart(
         document.getElementById('month'),
         {
             type: 'bar',
@@ -3319,7 +3320,7 @@ function contactsByMonth(stats) {
                 responsive: true
             }
         }
-    );
+    ));
 }
 
 function contactsByIsoWeekday(stats) {
@@ -3329,7 +3330,7 @@ function contactsByIsoWeekday(stats) {
         else return 1;
     });
     const data = labels.map(label => stats.timeseries.isoWeekday.total[label]);
-    new Chart(
+    charts.push(new Chart(
         document.getElementById('isoWeekday'),
         {
             type: 'bar',
@@ -3346,13 +3347,13 @@ function contactsByIsoWeekday(stats) {
                 responsive: true
             }
         }
-    );
+    ));
 }
 
 function contactsByMode(stats) {
     const labels = Object.keys(stats.tally.MODE.total).sort();
     const data = labels.map(label => stats.tally.MODE.total[label]);
-    new Chart(
+    charts.push(new Chart(
         document.getElementById('mode'),
         {
             type: 'doughnut',
@@ -3366,12 +3367,12 @@ function contactsByMode(stats) {
                 ]
             }
         }
-    );
+    ));
 }
 function contactsByMyRig(stats) {
     const labels = Object.keys(stats.tally.MY_RIG.total).sort();
     const data = labels.map(label => stats.tally.MY_RIG.total[label]);
-    new Chart(
+    charts.push(new Chart(
         document.getElementById('my_rig'),
         {
             type: 'doughnut',
@@ -3385,12 +3386,12 @@ function contactsByMyRig(stats) {
                 ]
             }
         }
-    );
+    ));
 }
 function contactsByMyAntenna(stats) {
     const labels = Object.keys(stats.tally.MY_ANTENNA.total).sort();
     const data = labels.map(label => stats.tally.MY_ANTENNA.total[label]);
-    new Chart(
+    charts.push(new Chart(
         document.getElementById('my_antenna'),
         {
             type: 'doughnut',
@@ -3404,12 +3405,12 @@ function contactsByMyAntenna(stats) {
                 ]
             }
         }
-    );
+    ));
 }
 function contactsByBand(stats) {
     const labels = Object.keys(stats.tally.BAND.total).sort();
     const data = labels.map(label => stats.tally.BAND.total[label]);
-    new Chart(
+    charts.push(new Chart(
         document.getElementById('band'),
         {
             type: 'doughnut',
@@ -3423,10 +3424,17 @@ function contactsByBand(stats) {
                 ]
             }
         }
-    );
+    ));
 }
 
 function plotIt(stats) {
+
+    while (charts.length > 0) {
+        const chart = charts.pop();
+        chart.destroy();
+    }
+
+    $('#spinner').removeClass('spinner');
     $('#results').removeClass('hidden');
     contactsByYear(stats);
     contactsByMonth(stats);
@@ -3444,6 +3452,9 @@ function plotIt(stats) {
 $(function () {
     $('form[name="file-chooser"]').on('submit', e => {
         e.preventDefault();
+
+        $('#results').addClass('hidden');
+        $('#spinner').addClass('spinner');
 
         const files = $('input[name="adif_file"]').prop('files');
         if (files.length !== 1) {
@@ -3543,7 +3554,7 @@ $(function () {
                 } catch (err) {
                     $('#error').text('parse error: ' + err.message + ((err.hasOwnProperty('field') && err.hasOwnProperty('value')) ? ' ' + err.field + '=' + err.value : ''));
                 }
-
+                $('#spinner').removeClass('spinner');
                 return;
             }
             chunks.push(decoder.decode(value));
