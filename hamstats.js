@@ -1661,17 +1661,17 @@ class CREDIT_GRANTED extends FieldDef {
             dataType: 'CreditList',
             check: value => {
                 return value.split(/,/g).every(credit => {
-                    if (credit in Credit) {
+                    if (credit in enums.Credit) {
                         return true;
                     }
-                    if (!(credit.split(':')[0] in Credit)) {
+                    if (!(credit.split(':')[0] in enums.Credit)) {
                         return false;
                     }
                     const mediums = credit.split(':')[1]?.split(/&/g);
                     if (!Array.isArray(mediums)) {
                         return false;
                     }
-                    return mediums.every(medium => medium in QslMedium);
+                    return mediums.every(medium => medium in enums.QslMedium);
                 });                
             },
         });
@@ -1685,17 +1685,17 @@ class CREDIT_SUBMITTED extends FieldDef {
             dataType: 'CreditList',
             check: value => {
                 return value.split(/,/g).every(credit => {
-                    if (credit in Credit) {
+                    if (credit in enums.Credit) {
                         return true;
                     }
-                    if (!(credit.split(':')[0] in Credit)) {
+                    if (!(credit.split(':')[0] in enums.Credit)) {
                         return false;
                     }
                     const mediums = credit.split(':')[1]?.split(/&/g);
                     if (!Array.isArray(mediums)) {
                         return false;
                     }
-                    return mediums.every(medium => medium in QslMedium);
+                    return mediums.every(medium => medium in enums.QslMedium);
                 });                
             },
         });
