@@ -3492,6 +3492,19 @@ function txPower(stats) {
     );
 }
 
+function callsigns(stats) {
+    $('#unique_pfx').text(Object.keys(stats.tally.PFX).length);
+    $('#unique_call').text(Object.keys(stats.tally.CALL).length);
+    $('#avg_len_call').text(
+        (Object.keys(stats.tally.CALL).reduce((r, c) => r + c.length, 0) / (1.0 * Object.keys(stats.tally.CALL).length)).toFixed(2)
+    );
+
+    const common_pfx = Object.entries(stats.tally.PFX).reduce((result, pfx) => (!result || result[1] < pfx[1]) ? pfx : result);
+    $('#most_common_pfx').text(common_pfx[0]);
+    const common_call = Object.entries(stats.tally.CALL).reduce((result, call) => (!result || result[1] < call[1]) ? call : result);
+    $('#most_common_call').text(common_call[0]);
+}
+
 function plotIt(stats, adif_file, header, startTime) {
 
     while (charts.length > 0) {
@@ -3529,6 +3542,7 @@ function plotIt(stats, adif_file, header, startTime) {
 
     txPower(stats);
 
+    callsigns(stats);
 }
 
 
@@ -3575,6 +3589,8 @@ $(function () {
                         ITU: new Map(),
                         MY_SIG: new Map(),
                         SIG: new Map(),
+                        CALL: new Map(),
+                        PFX: new Map(),
                     },
                     timeseries: {
                         year: new Map(),
@@ -3598,6 +3614,10 @@ $(function () {
                         LP: 0,
                         QRP: 0,
                         QRPp: 0,
+                    },
+                    callsigns: {
+                        CALL: new Set(),
+                        PFX: new Set(),
                     },
                 };
 
