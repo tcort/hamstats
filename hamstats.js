@@ -3467,6 +3467,7 @@ function places(stats) {
     $('#ncqz').text(Object.keys(stats.places.CQZ).length);
     $('#ngrid').text(Object.keys(stats.places.GRIDSQUARE).length);
     $('#nusa').text(Object.keys(stats.places.usa).length);
+    $('#nusacnty').text(Object.keys(stats.places.usacnty).length);
     $('#ncanada').text(Object.keys(stats.places.canada).length);
 }
 
@@ -3562,6 +3563,7 @@ $(function () {
                     },
                     places: {
                         usa: new Map(),
+                        usacnty: new Map(),
                         canada: new Map(),
                         GRIDSQUARE: new Map(),
                         CQZ: new Map(),
@@ -3633,6 +3635,10 @@ $(function () {
                             if (typeof qso.STATE === 'string' && qso.STATE !== '') {
                                 const oldValue = stats.places.usa.get(qso.STATE) ?? 0;
                                 stats.places.usa.set(qso.STATE, oldValue + 1);
+                            }
+                            if (typeof qso.CNTY === 'string' && qso.CNTY !== '') {
+                                const oldValue = stats.places.usacnty.get(qso.CNTY) ?? 0;
+                                stats.places.usacnty.set(qso.CNTY, oldValue + 1);
                             }
                             break;
                         default:
