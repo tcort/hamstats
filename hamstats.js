@@ -3449,7 +3449,6 @@ function contactsByBand(stats) {
 }
 
 function placesUsa(stats) {
-
     $('#usmap').usmap({
         showLabels: false,
         stateStyles: { fill: '#ffffff' },
@@ -3469,6 +3468,28 @@ function places(stats) {
     $('#nusa').text(Object.keys(stats.places.usa).length);
     $('#nusacnty').text(Object.keys(stats.places.usacnty).length);
     $('#ncanada').text(Object.keys(stats.places.canada).length);
+}
+
+function txPower(stats) {
+    const labels = Object.keys(stats.tx_pwr);
+    const data = labels.map(label => stats.tx_pwr[label]);
+    charts.push(
+        new Chart(
+            document.getElementById('tx_pwr'),
+            {
+                type: 'doughnut',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Contacts',
+                            data,
+                        }
+                    ]
+                }
+            }
+        )
+    );
 }
 
 function plotIt(stats, adif_file, header, startTime) {
@@ -3505,6 +3526,8 @@ function plotIt(stats, adif_file, header, startTime) {
     places(stats);
 
     placesUsa(stats);
+
+    txPower(stats);
 
 }
 
@@ -3569,6 +3592,12 @@ $(function () {
                         CQZ: new Map(),
                         ITUZ: new Map(),
                         DXCC: new Map(),
+                    },
+                    tx_pwr: {
+                        QRO: 0,
+                        LP: 0,
+                        QRP: 0,
+                        QRPp: 0,
                     },
                 };
 
@@ -3643,6 +3672,19 @@ $(function () {
                             break;
                         default:
                             break;
+                    }
+
+                    if (typeof qso.TX_PWR === 'string' && qso.TX_PWR !== '') {
+                        const tx_pwr = parseFloat(qso.TX_PWR);
+                        if (tx_pwr > 100) {
+                            stats.tx_pwr.QRO++;
+                        } else if (tx_pwr > 5) {
+                            stats.tx_pwr.LP++;
+                        } else if (tx_pwr > 1) {
+                            stats.tx_pwr.QRP++;
+                        } else {
+                            stats.tx_pwr.QRPp++;
+                        }
                     }
 
                 });
