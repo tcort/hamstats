@@ -3461,6 +3461,15 @@ function placesUsa(stats) {
     });
 }
 
+function places(stats) {
+    $('#ndxcc').text(Object.keys(stats.places.DXCC).length);
+    $('#nituz').text(Object.keys(stats.places.ITUZ).length);
+    $('#ncqz').text(Object.keys(stats.places.CQZ).length);
+    $('#ngrid').text(Object.keys(stats.places.GRIDSQUARE).length);
+    $('#nusa').text(Object.keys(stats.places.usa).length);
+    $('#ncanada').text(Object.keys(stats.places.canada).length);
+}
+
 function plotIt(stats, adif_file, header, startTime) {
 
     while (charts.length > 0) {
@@ -3492,6 +3501,8 @@ function plotIt(stats, adif_file, header, startTime) {
     contactsByMyRig(stats);
     contactsByMyAntenna(stats);
 
+    places(stats);
+
     placesUsa(stats);
 
 }
@@ -3517,7 +3528,6 @@ $(function () {
         }
 
         const [ adif_file ] = files;
-console.log(adif_file);
 
         const chunks = [];
 
@@ -3552,6 +3562,11 @@ console.log(adif_file);
                     },
                     places: {
                         usa: new Map(),
+                        canada: new Map(),
+                        GRIDSQUARE: new Map(),
+                        CQZ: new Map(),
+                        ITUZ: new Map(),
+                        DXCC: new Map(),
                     },
                 };
 
@@ -3561,6 +3576,10 @@ console.log(adif_file);
 
                 parser.addEventListener('QSO', e => {
                     const qso = e.detail;
+
+                    if (typeof qso.GRIDSQUARE === 'string' && qso.GRIDSQUARE.length > 4) {
+                        qso.GRIDSQUARE = qso.GRIDSQUARE.slice(0, 4);
+                    }
 
                     stats.nqso++;
 
@@ -3596,7 +3615,20 @@ console.log(adif_file);
                         stats.timeseries[key].set(label, oldValue + 1);
                     }); 
 
+
+                    [ 'DXCC', 'CQZ', 'ITUZ', 'GRIDSQUARE' ].forEach(place => {
+                        if (typeof qso[place] === 'string' && qso[place] !== '') {
+                            const oldValue = stats.places[place].get(qso[place]) ?? 0;
+                            stats.places[place].set(qso[place], oldValue + 1);
+                        }
+                    });
+
                     switch (qso.DXCC) {
+                        case '1':
+                            if (typeof qso.STATE === 'string' && qso.STATE !== '') {
+                                const oldValue = stats.places.canada.get(qso.STATE) ?? 0;
+                                stats.places.canada.set(qso.STATE, oldValue + 1);
+                            }
                         case '291':
                             if (typeof qso.STATE === 'string' && qso.STATE !== '') {
                                 const oldValue = stats.places.usa.get(qso.STATE) ?? 0;
