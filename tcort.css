@@ -15,7 +15,7 @@
  */
 
 /*
-    Version 2023.04.18a
+    Version 2023.04.22a
  */
 
 body {
@@ -101,6 +101,7 @@ textarea {
     margin: 4px 0;
     box-sizing: border-box;
     background-color: #f8f8f8;
+    color: #000000;
 }
 
 textarea {
