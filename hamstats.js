@@ -3545,7 +3545,6 @@ function plotIt(stats, adif_file, header, startTime) {
     const endTime = new Date();
     const runtime_ms = endTime.getTime() - startTime.getTime();
 
-    $('#adif_filename').text(adif_file.name);
     $('#adif_filesize').text(adif_file.size);
     $('#header_progname').text(header.PROGRAMID ?? 'unknown application');
     $('#header_progver').text(header.PROGRAMVERSION ?? 'unknown version');
