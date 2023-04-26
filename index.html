@@ -57,12 +57,12 @@
         <header>
             <img id="logo" height="64" width="64" src="hamstats-logo-little.png?1" alt="cartoon pig holding a calculator">
             <h1 id="name">Ham Stats</h1>
-            <p>
+            <p id="about">
                 Gain insight into your amateur radio logs with this powerful ham radio log analyzer. This site is free and all computations run in the browser. No data is sent to the server.
                 Send bug reports, feature requests, and other feedback to: <a href="mailto:linuxgeek@gmail.com">linuxgeek@gmail.com</a>
             </p>
         </header>
-        <div> 
+        <div id="file-chooser"> 
             <form name="file-chooser">
                 <label for="adif_file">ADIF File</label>
                 <input type="file" name="adif_file" id="adif_file" accept=".adi,.adif" required>
@@ -157,6 +157,27 @@
                         <tr>
                             <th>Average Callsign Length</th>
                             <td><span id="avg_len_call"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card">
+                    <h2>Average Signal Report</h2>
+                    <table> 
+                        <tr>
+                            <th>Readability (Sent)</th>
+                            <td><span id="r_sent"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Strength (Sent)</th>
+                            <td><span id="s_sent"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Readability (Rcvd)</th>
+                            <td><span id="r_rcvd"></span></td>
+                        </tr>
+                        <tr>
+                            <th>Strength (Rcvd)</th>
+                            <td><span id="s_rcvd"></span></td>
                         </tr>
                     </table>
                 </div>

@@ -3551,6 +3551,64 @@ function contests(stats) {
 
 }
 
+function rst(stats) {
+    const results = {
+        r_sent_total: 0,
+        r_sent_n: 0,
+        s_sent_total: 0,
+        s_sent_n: 0,
+        r_rcvd_total: 0,
+        r_rcvd_n: 0,
+        s_rcvd_total: 0,
+        s_rcvd_n: 0,
+    };
+
+    [ 'sent', 'rcvd' ].forEach(direction => {
+        Object
+            .entries(stats.tally[`RST_${direction.toUpperCase()}`])
+            .forEach(([rst, count]) => {
+                const [ r, s, ...rest ] = rst.split('');        
+
+                const ri = parseInt(r);
+                if (1 <= r && r <= 5) {
+                    results[`r_${direction}_total`] += (count * r);
+                    results[`r_${direction}_n`] += count;
+                }
+
+                const si = parseInt(s);
+                if (1 <= s && s <= 9) {
+                    results[`s_${direction}_total`] += (count * s);
+                    results[`s_${direction}_n`] += count;
+                }
+            });
+    });
+
+    if (results.r_sent_n === 0) {
+        $('#r_sent').text('N/A');
+    } else {
+        $('#r_sent').text((results.r_sent_total / (results.r_sent_n * 1.0)).toFixed(2));
+    }
+
+    if (results.s_sent_n === 0) {
+        $('#s_sent').text('N/A');
+    } else {
+        $('#s_sent').text((results.s_sent_total / (results.s_sent_n * 1.0)).toFixed(2));
+    }
+
+    if (results.r_rcvd_n === 0) {
+        $('#r_rcvd').text('N/A');
+    } else {
+        $('#r_rcvd').text((results.r_rcvd_total / (results.r_rcvd_n * 1.0)).toFixed(2));
+    }
+
+    if (results.s_rcvd_n === 0) {
+        $('#s_rcvd').text('N/A');
+    } else {
+        $('#s_rcvd').text((results.s_rcvd_total / (results.s_rcvd_n * 1.0)).toFixed(2));
+    }
+
+}
+
 function plotIt(stats, adif_file, header, startTime) {
 
     while (charts.length > 0) {
@@ -3587,6 +3645,7 @@ function plotIt(stats, adif_file, header, startTime) {
     callsigns(stats);
     rates(stats);
     contests(stats);
+    rst(stats);
 }
 
 
@@ -3636,6 +3695,8 @@ $(function () {
                         CALL: new Map(),
                         PFX: new Map(),
                         CONTEST_ID: new Map(),
+                        RST_SENT: new Map(),
+                        RST_RCVD: new Map(),
                     },
                     timeseries: {
                         year: new Map(),

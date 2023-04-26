@@ -14,3 +14,6 @@ td {
     font-family: monaco, andale mono, monospace;
 }
 
+@media print {
+    #about, #file-chooser { display: none; }
+}
