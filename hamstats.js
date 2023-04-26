@@ -3499,10 +3499,40 @@ function callsigns(stats) {
         (Object.keys(stats.tally.CALL).reduce((r, c) => r + c.length, 0) / (1.0 * Object.keys(stats.tally.CALL).length)).toFixed(2)
     );
 
-    const common_pfx = Object.entries(stats.tally.PFX).reduce((result, pfx) => (!result || result[1] < pfx[1]) ? pfx : result);
-    $('#most_common_pfx').text(common_pfx[0]);
+    if (Object.entries(stats.tally.PFX).length > 0) {
+        const common_pfx = Object.entries(stats.tally.PFX).reduce((result, pfx) => (!result || result[1] < pfx[1]) ? pfx : result);
+        $('#most_common_pfx').text(common_pfx[0]);
+    } else {
+        $('#most_common_pfx').text('N/A');
+    }
+
     const common_call = Object.entries(stats.tally.CALL).reduce((result, call) => (!result || result[1] < call[1]) ? call : result);
     $('#most_common_call').text(common_call[0]);
+}
+
+function rates(stats) {
+    if (!stats.date_first_qso || !stats.date_last_qso) {
+        $('#rate_per_hour').text('0');
+        $('#rate_per_day').text('0');
+        $('#rate_per_month').text('0');
+        $('#rate_per_year').text('0');
+        return;
+    }
+
+    const first = moment(stats.date_first_qso);
+    const last = moment(stats.date_last_qso);
+
+    const diff = moment.duration(last.diff(first));
+
+    const per_hour = ((stats.nqso * 1.0) / (diff.asHours() * 1.0));
+    const per_day = ((stats.nqso * 24.0) / (diff.asHours() * 1.0));                     // 24 hours a day
+    const per_month = ((stats.nqso * 24.0 * (365.25 / 12.0)) / (diff.asHours() * 1.0)); // 365.25/12 is days per month
+    const per_year = ((stats.nqso * 24.0 * 365.25) / (diff.asHours() * 1.0));           // 365.25 is days per year (inc leap year every 4 years)
+
+    $('#rate_per_hour').text(per_hour.toFixed(2));
+    $('#rate_per_day').text(per_day.toFixed(2));
+    $('#rate_per_month').text(per_month.toFixed(2));
+    $('#rate_per_year').text(per_year.toFixed(2));
 }
 
 function plotIt(stats, adif_file, header, startTime) {
@@ -3543,6 +3573,8 @@ function plotIt(stats, adif_file, header, startTime) {
     txPower(stats);
 
     callsigns(stats);
+
+    rates(stats);
 }
 
 
