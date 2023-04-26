@@ -3535,6 +3535,22 @@ function rates(stats) {
     $('#rate_per_year').text(per_year.toFixed(2));
 }
 
+function contests(stats) {
+
+    $('#contests').html('');
+
+    Object
+        .entries(stats.tally.CONTEST_ID)
+        .map(([ key, val ]) => [ key, val, enums.ContestID[key] ?? key ])
+        .sort((a, b) => b[1] - a[1])
+        .forEach(([ key, val, label ]) => {
+            $('#contests').append('<tr><th id="' + key + '_label"></th><td><span id="' + key + '_val"></span></td></tr>');
+            $('#' + key + '_label').text(label);
+            $('#' + key + '_val').text(val);
+        });
+
+}
+
 function plotIt(stats, adif_file, header, startTime) {
 
     while (charts.length > 0) {
@@ -3566,14 +3582,11 @@ function plotIt(stats, adif_file, header, startTime) {
     contactsByMyAntenna(stats);
 
     places(stats);
-
     placesUsa(stats);
-
     txPower(stats);
-
     callsigns(stats);
-
     rates(stats);
+    contests(stats);
 }
 
 
@@ -3622,6 +3635,7 @@ $(function () {
                         SIG: new Map(),
                         CALL: new Map(),
                         PFX: new Map(),
+                        CONTEST_ID: new Map(),
                     },
                     timeseries: {
                         year: new Map(),
@@ -3648,7 +3662,6 @@ $(function () {
                     },
                     callsigns: {
                         CALL: new Set(),
-                        PFX: new Set(),
                     },
                 };
 
