@@ -11,7 +11,7 @@
 
 td {
     text-align: right;
-    font-family: monaco, andale mono, monospace;
+    font-family: "Roboto Mono";
 }
 
 @media print {
