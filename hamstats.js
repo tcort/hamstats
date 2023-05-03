@@ -129,15 +129,18 @@ class DataTypes {
 
     static checkDate(s) {
         const year = parseInt(s.slice(0, 4));
+        const year_s = `${year}`.padStart(4, '0');
         const month = parseInt(s.slice(4, 6));
+        const month_s = `${month}`.padStart(2, '0');
         const day = parseInt(s.slice(6, 8));
+        const day_s = `${day}`.padStart(2, '0');
 
         // check month/day range
         // javascript will return NaN for valueOf when month is out of range (e.g. '2023-22-30 00:00:00' becomes NaN / Invalid Date)
         // javascript will change the day/month if day is out of range (e.g. '2023-02-30 00:00:00' becomes '2023-03-03 00:00:00')
         // so we can verify the date is in range by checking for NaN and that month and date are unchanged.
         // this saves us the trouble of calculating leap years for number of days in february
-        const d = new Date(`${year}-${month}-${day} 00:00:00`);
+        const d = new Date(`${year_s}-${month_s}-${day_s} 00:00:00`);
         return !isNaN(d.valueOf()) && 1930 <= year && month === (1 + d.getMonth()) && day === d.getDate();
     }
 

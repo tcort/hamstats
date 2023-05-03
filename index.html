@@ -27,7 +27,7 @@
         <meta name="author" content="Thomas Cort">
         <meta name="description" content="Gain insight into your amateur radio logs with this powerful ham radio log analyzer.">
         <meta name="keywords" content="amateur, radio, ham, stats, adif, statistics, logs, log, file">
-        <meta name="HandheldFriendly" content="true"> 
+        <meta name="HandheldFriendly" content="true">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:url" content="https://www.hamstats.com/">
@@ -47,7 +47,7 @@
         <link rel="icon" href="favicon.ico?1">
         <link rel="apple-touch-icon" href="hamstats-logo-apple-icon.png?1">
 
-        <link rel="stylesheet" href="tcort.css?3">
+        <link rel="stylesheet" href="tcort.css?4">
         <link rel="stylesheet" href="robotomono-regular.css?1">
         <link rel="stylesheet" href="hamstats.css?4">
 
@@ -59,198 +59,228 @@
             <img id="logo" height="64" width="64" src="hamstats-logo-little.png?1" alt="cartoon pig holding a calculator">
             <h1 id="name">Ham Stats</h1>
             <p id="about">
-                Gain insight into your amateur radio logs with this powerful ham radio log analyzer. This site is free and all computations run in the browser. No data is sent to the server.
+                Gain insight into your amateur radio logs with this powerful ham radio log analyzer. This tool is free and all computations run in the browser. No data is sent to the server.
                 Send bug reports, feature requests, and other feedback to: <a href="mailto:linuxgeek@gmail.com">linuxgeek@gmail.com</a>
             </p>
         </header>
-        <div id="file-chooser"> 
-            <form name="file-chooser">
-                <label for="adif_file">ADIF File</label>
-                <input type="file" name="adif_file" id="adif_file" accept=".adi,.adif" required>
-                <input type="submit" value="Analyze">
-            </form>
-        </div>
-        <div id="spinner" class=""></div>
-        <div id="error"></div>
-        <div id="results" class="hidden">
-            <div class="cards">
-                <div class="card">
-                    <h2>ADIF File</h2>
-                    <table> 
-                        <tr>
-                            <th>Size</th>
-                            <td><span id="adif_filesize"></span> bytes</td>
-                        </tr>
-                        <tr>
-                            <th>QSOs</th>
-                            <td><span id="nqso"></span></td>
-                        </tr>
-                        <tr>
-                            <th>First QSO</th>
-                            <td><span id="date_first_qso"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Last QSO</th>
-                            <td><span id="date_last_qso"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Created by</th>
-                            <td><span id="header_progname"></span> v<span id="header_progver"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Processing time</th>
-                            <td><span id="runtime"></span> seconds</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="card">
-                    <h2>Places</h2>
-                    <table> 
-                        <tr>
-                            <th>DXCC Entities</th>
-                            <td><span id="ndxcc"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Gridsquares</th>
-                            <td><span id="ngrid"></span></td>
-                        </tr>
-                        <tr>
-                            <th>ITU Zones</th>
-                            <td><span id="nituz"></span></td>
-                        </tr>
-                        <tr>
-                            <th>CQ Zones</th>
-                            <td><span id="ncqz"></span></td>
-                        </tr>
-                        <tr>
-                            <th>States (USA)</th>
-                            <td><span id="nusa"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Counties (USA)</th>
-                            <td><span id="nusacnty"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Provinces (Canada)</th>
-                            <td><span id="ncanada"></span></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="card">
-                    <h2>Callsigns</h2>
-                    <table> 
-                        <tr>
-                            <th>Unique Callsigns</th>
-                            <td><span id="unique_call"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Most Common Callsign</th>
-                            <td><span id="most_common_call"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Unique Prefixes</th>
-                            <td><span id="unique_pfx"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Most Common Prefix</th>
-                            <td><span id="most_common_pfx"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Average Callsign Length</th>
-                            <td><span id="avg_len_call"></span></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="card">
-                    <h2>Average Signal Report</h2>
-                    <table> 
-                        <tr>
-                            <th>Readability (Sent)</th>
-                            <td><span id="r_sent"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Strength (Sent)</th>
-                            <td><span id="s_sent"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Readability (Rcvd)</th>
-                            <td><span id="r_rcvd"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Strength (Rcvd)</th>
-                            <td><span id="s_rcvd"></span></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="card">
-                    <h2>QSO Rates</h2>
-                    <table> 
-                        <tr>
-                            <th>Per Hour</th>
-                            <td><span id="rate_per_hour"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Per Day</th>
-                            <td><span id="rate_per_day"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Per Month</th>
-                            <td><span id="rate_per_month"></span></td>
-                        </tr>
-                        <tr>
-                            <th>Per Year</th>
-                            <td><span id="rate_per_year"></span></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="card">
-                    <h2>Contest QSOs</h2>
-                    <table>
-                        <tbody id="contests">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card">
-                    <h2>Bands</h2>
-                    <canvas id="band"></canvas>
-                </div>
-                <div class="card">
-                    <h2>Modes</h2>
-                    <canvas id="mode"></canvas>
-                </div>
-                <div class="card">
-                    <h2>Rigs</h2>
-                    <canvas id="my_rig"></canvas>
-                </div>
-                <div class="card">
-                    <h2>Antennas</h2>
-                    <canvas id="my_antenna"></canvas>
-                </div>
-                <div class="card">
-                    <h2>Power</h2>
-                    <canvas id="tx_pwr"></canvas>
-                </div>
-                <div class="card">
-                    <h2>Years</h2>
-                    <canvas id="year"></canvas>
-                </div>
-                <div class="card">
-                    <h2>Months of Year</h2>
-                    <canvas id="month"></canvas>
-                </div>
-                <div class="card">
-                    <h2>Day of Week</h2>
-                    <canvas id="isoWeekday"></canvas>
-                </div>
-                <div class="card">
-                    <h2>Time of Day</h2>
-                    <canvas id="hour"></canvas>
-                </div>
-                <div class="card">
-                    <h2>United States</h2>
-                    <div id="usmap"></div>
-                </div>
+        <section>
+            <div id="file-chooser">
+                <h2>Choose a file to analyze</h2>
+                <form name="file-chooser">
+                    <label for="adif_file">ADIF File</label>
+                    <input type="file" name="adif_file" id="adif_file" accept=".adi,.adif" required>
+                    <input type="submit" value="Analyze">
+                </form>
             </div>
+            <div id="spinner" class=""></div>
+            <div id="error"></div>
+        </section>
+        <div id="results" class="hidden">
+            <section>
+                <h2>General</h2>
+                <div class="cards">
+                    <div class="card">
+                        <h3>ADIF File</h3>
+                        <table>
+                            <tr>
+                                <th>Size</th>
+                                <td><span id="adif_filesize"></span> bytes</td>
+                            </tr>
+                            <tr>
+                                <th>QSOs</th>
+                                <td><span id="nqso"></span></td>
+                            </tr>
+                            <tr>
+                                <th>First QSO</th>
+                                <td><span id="date_first_qso"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Last QSO</th>
+                                <td><span id="date_last_qso"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Created by</th>
+                                <td><span id="header_progname"></span> v<span id="header_progver"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Processing time</th>
+                                <td><span id="runtime"></span> seconds</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <h3>Callsigns</h3>
+                        <table>
+                            <tr>
+                                <th>Unique Callsigns</th>
+                                <td><span id="unique_call"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Most Common Callsign</th>
+                                <td><span id="most_common_call"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Unique Prefixes</th>
+                                <td><span id="unique_pfx"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Most Common Prefix</th>
+                                <td><span id="most_common_pfx"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Average Callsign Length</th>
+                                <td><span id="avg_len_call"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2>Signals</h2>
+                <div class="cards">
+                    <div class="card">
+                        <h3>Average Signal Report</h3>
+                        <table>
+                            <tr>
+                                <th>Readability (Sent)</th>
+                                <td><span id="r_sent"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Strength (Sent)</th>
+                                <td><span id="s_sent"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Readability (Rcvd)</th>
+                                <td><span id="r_rcvd"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Strength (Rcvd)</th>
+                                <td><span id="s_rcvd"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <h3>Bands</h3>
+                        <canvas id="band"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Modes</h3>
+                        <canvas id="mode"></canvas>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2>Hardware</h2>
+                <div class="cards">
+                    <div class="card">
+                        <h3>Rigs</h3>
+                        <canvas id="my_rig"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Antennas</h3>
+                        <canvas id="my_antenna"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Power</h3>
+                        <canvas id="tx_pwr"></canvas>
+                    </div>
+            </section>
+            <section>
+                <h2>Contesting</h2>
+                <div class="cards">
+                    <div class="card">
+                        <h3>Contest QSOs</h3>
+                        <table>
+                            <tbody id="contests">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2>QSOs over Time</h2>
+                <div class="cards">
+                    <div class="card">
+                        <h3>Years</h3>
+                        <canvas id="year"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Months of Year</h3>
+                        <canvas id="month"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Day of Week</h3>
+                        <canvas id="isoWeekday"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Time of Day</h3>
+                        <canvas id="hour"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>QSO Rates</h3>
+                        <table>
+                            <tr>
+                                <th>Per Hour</th>
+                                <td><span id="rate_per_hour"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Per Day</th>
+                                <td><span id="rate_per_day"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Per Month</th>
+                                <td><span id="rate_per_month"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Per Year</th>
+                                <td><span id="rate_per_year"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2>Locations</h2>
+                <div class="cards">
+                    <div class="card">
+                        <h3>Stations Worked</h3>
+                        <table>
+                            <tr>
+                                <th>DXCC Entities</th>
+                                <td><span id="ndxcc"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Gridsquares</th>
+                                <td><span id="ngrid"></span></td>
+                            </tr>
+                            <tr>
+                                <th>ITU Zones</th>
+                                <td><span id="nituz"></span></td>
+                            </tr>
+                            <tr>
+                                <th>CQ Zones</th>
+                                <td><span id="ncqz"></span></td>
+                            </tr>
+                            <tr>
+                                <th>States (USA)</th>
+                                <td><span id="nusa"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Counties (USA)</th>
+                                <td><span id="nusacnty"></span></td>
+                            </tr>
+                            <tr>
+                                <th>Provinces (Canada)</th>
+                                <td><span id="ncanada"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <h3>United States</h3>
+                        <div id="usmap"></div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <footer>
@@ -265,6 +295,6 @@
         <script src="jquery.usmap.js?1"></script>
         <script src="moment.js?1"></script>
         <script src="chart.umd.js?1"></script>
-        <script src="hamstats.js?2"></script>
+        <script src="hamstats.js?3"></script>
     </body>
 </html>

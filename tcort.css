@@ -31,6 +31,19 @@ body {
     padding-right: 2em;
 }
 
+header, section, footer {
+    background: #ffffff;
+    color: #454545;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid;
+}
+
+footer p {
+    text-align: center;
+}
+
 h1, h2, h3 {
     line-height: 1.2345;
 }
@@ -125,7 +138,7 @@ progress {
 }
 
 .navtab {
-    border-radius: 4px 4px 0px 0px;
+    border-radius: 25px;
     border: 2px solid grey;
     padding: 6px 10px;
     margin: 0;
@@ -141,7 +154,6 @@ progress {
 
 .activetab {
     background: #f2f2f2;
-    border-bottom: 0px;
 }
 
 .comma-separated-list {
