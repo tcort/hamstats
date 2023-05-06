@@ -3248,6 +3248,108 @@ class AdifParser extends EventTarget {
     }
 }
 
+class GridSquare {
+
+    static decode(grid_sqr) {
+
+        const [
+            field_lon, field_lat,
+            square_lon, square_lat,
+            subsquare_lon, subsquare_lat,
+            ...tail
+        ] = `${grid_sqr}`.trim().split('');
+
+        const field_values = [
+            'A', 'B', 'C', 'D', 'E', 'F',
+            'G', 'H', 'I', 'J', 'K', 'L',
+            'M', 'N', 'O', 'P', 'Q', 'R',
+        ];
+
+        const field_lon_index = field_values.indexOf(`${field_lon}`.toUpperCase());
+        if (field_lon_index === -1) {
+            throw new Error('Bad Grid Square: longitude component of field is invalid');
+        }
+
+        const field_lat_index = field_values.indexOf(`${field_lat}`.toUpperCase());
+        if (field_lat_index === -1) {
+            throw new Error('Bad Grid Square: latitude component of field is invalid');
+        }
+
+        if (square_lon === undefined || square_lat === undefined) {
+            return {
+                lon: (field_lon_index * 20) - 180 + 10,
+                lat: (field_lat_index * 10) - 90 + 5,
+            };
+        }
+
+        const square_values = [
+            '0', '1', '2',
+            '3', '4', '5',
+            '6', '7', '8',
+            '9',
+        ];
+
+        const square_lon_index = square_values.indexOf(`${square_lon}`);
+        if (square_lon_index === -1) {
+            throw new Error('Bad Grid Square: longitude component of square is invalid');
+        }
+
+        const square_lat_index = square_values.indexOf(`${square_lat}`);
+        if (square_lat_index === -1) {
+            throw new Error('Bad Grid Square: latitude component of square is invalid');
+        }
+
+        if (subsquare_lon === undefined || subsquare_lat === undefined) {
+            return {
+                lon: (field_lon_index * 20) + (square_lon_index * 2) - 180 + 1.0,
+                lat: (field_lat_index * 10) + (square_lat_index * 1) -  90 + 0.5,
+            };
+        }
+
+        const subsquare_values = [
+            'a', 'b', 'c', 'd', 'e', 'f',
+            'g', 'h', 'i', 'j', 'k', 'l',
+            'm', 'n', 'o', 'p', 'q', 'r',
+            's', 't', 'u', 'v', 'w', 'x',
+        ];
+
+        const subsquare_lon_index = subsquare_values.indexOf(`${subsquare_lon}`.toLowerCase());
+        if (subsquare_lon_index === -1) {
+            throw new Error('Bad Grid Square: longitude component of subsquare is invalid');
+        }
+
+        const subsquare_lat_index = subsquare_values.indexOf(`${subsquare_lat}`.toLowerCase());
+        if (subsquare_lat_index === -1) {
+            throw new Error('Bad Grid Square: latitude component of subsquare is invalid');
+        }
+
+        return {
+            lon: (field_lon_index * 20) + (square_lon_index * 2) + ((1/60) * 5.0 * (subsquare_lon_index + 0.5)) - 180,
+            lat: (field_lat_index * 10) + (square_lat_index * 1) + ((1/60) * 2.5 * (subsquare_lat_index + 0.5)) -  90,
+        };
+    }
+
+    static distance(grid1, grid2) {
+
+        const coord1 = GridSquare.decode(grid1);
+        const coord2 = GridSquare.decode(grid2);
+
+        const rad = deg => deg * (Math.PI / 180.0);
+
+        const [ lat1, lon1, lat2, lon2 ] = [ rad(coord1.lat), rad(coord1.lon), rad(coord2.lat), rad(coord2.lon) ];
+
+        
+        return Math.atan2(
+            Math.sqrt(
+                Math.pow(Math.cos(lat2) * Math.sin(lon2 - lon1) , 2) +
+                Math.pow(Math.cos(lat1) * Math.sin(lat2) -
+                Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1) , 2)
+            ),
+            Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1)
+        ) * 6371.009;
+    }
+}
+
 const timeseriesLabels = {
     isoWeekday: ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
     month: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -3471,6 +3573,17 @@ function places(stats) {
     $('#nusa').text(Object.keys(stats.places.usa).length);
     $('#nusacnty').text(Object.keys(stats.places.usacnty).length);
     $('#ncanada').text(Object.keys(stats.places.canada).length);
+
+    if (stats.dist.length > 0) {
+        stats.dist.sort((a,b) => a - b);
+        $('#dist_closest').text(stats.dist[0].toFixed(2) + ' km');
+        $('#dist_average').text((stats.dist.reduce((r, a) => r + a, 0) / (stats.dist.length * 1.0)).toFixed(2) + ' km');
+        $('#dist_furthest').text(stats.dist[stats.dist.length - 1].toFixed(2) + ' km');
+    } else {
+        $('#dist_furthest').text('0 km');
+        $('#dist_average').text('0 km');
+        $('#dist_closest').text('0 km');
+    }
 }
 
 function txPower(stats) {
@@ -3727,6 +3840,7 @@ $(function () {
                     callsigns: {
                         CALL: new Set(),
                     },
+                    dist: [],
                 };
 
                 parser.addEventListener('Header', e => {
@@ -3735,6 +3849,10 @@ $(function () {
 
                 parser.addEventListener('QSO', e => {
                     const qso = e.detail;
+
+                    if (typeof qso.GRIDSQUARE === 'string' && qso.GRIDSQUARE.length > 0 && typeof qso.MY_GRIDSQUARE === 'string' && qso.MY_GRIDSQUARE.length > 0) {
+                        stats.dist.push(GridSquare.distance(qso.MY_GRIDSQUARE, qso.GRIDSQUARE));
+                    }
 
                     if (typeof qso.GRIDSQUARE === 'string' && qso.GRIDSQUARE.length > 4) {
                         qso.GRIDSQUARE = qso.GRIDSQUARE.slice(0, 4);
