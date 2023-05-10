@@ -3725,6 +3725,16 @@ function rst(stats) {
 
 }
 
+function pota(stats) {
+
+    $('#pota_hunter_qso').text(stats.pota.hunter_qso);
+    $('#pota_activator_qso').text(stats.pota.activator_qso);
+    $('#pota_p2p_qso').text(stats.pota.p2p_qso);
+    $('#pota_hunted_parks').text(stats.pota.hunted_parks.size);
+    $('#pota_activated_parks').text(stats.pota.activated_parks.size);
+
+}
+
 function plotIt(stats, adif_file, header, startTime) {
 
     while (charts.length > 0) {
@@ -3762,6 +3772,7 @@ function plotIt(stats, adif_file, header, startTime) {
     rates(stats);
     contests(stats);
     rst(stats);
+    pota(stats);
 }
 
 
@@ -3841,6 +3852,13 @@ $(function () {
                         CALL: new Set(),
                     },
                     dist: [],
+                    pota: {
+                        hunter_qso: 0,
+                        hunted_parks: new Set(),
+                        activator_qso: 0,
+                        activated_parks: new Set(),
+                        p2p_qso: 0,
+                    },
                 };
 
                 parser.addEventListener('Header', e => {
@@ -3850,7 +3868,9 @@ $(function () {
                 parser.addEventListener('QSO', e => {
                     const qso = e.detail;
 
-                    if (typeof qso.GRIDSQUARE === 'string' && qso.GRIDSQUARE.length > 0 && typeof qso.MY_GRIDSQUARE === 'string' && qso.MY_GRIDSQUARE.length > 0) {
+                    if (typeof qso.DISTANCE === 'string' && qso.DISTANCE.length > 0) {
+                        stats.dist.push(parseFloat(qso.DISTANCE));
+                    } else if (typeof qso.GRIDSQUARE === 'string' && qso.GRIDSQUARE.length > 0 && typeof qso.MY_GRIDSQUARE === 'string' && qso.MY_GRIDSQUARE.length > 0) {
                         stats.dist.push(GridSquare.distance(qso.MY_GRIDSQUARE, qso.GRIDSQUARE));
                     }
 
@@ -3933,6 +3953,30 @@ $(function () {
                         }
                     }
 
+                    // POTA
+                    const pota_ref = qso.SIG === 'POTA' ? qso.SIG_INFO : qso.POTA_REF;
+                    if (typeof pota_ref === 'string' && pota_ref !== '') {
+                        stats.pota.hunter_qso++;
+                        pota_ref.split(',').map(ref => ref.split('@')[0]).forEach(ref => {
+                            stats.pota.hunted_parks.add(ref);
+                        });
+                    }
+
+                    const my_pota_ref = qso.MY_SIG === 'POTA' ? qso.MY_SIG_INFO : qso.MY_POTA_REF;
+                    if (typeof my_pota_ref === 'string' && my_pota_ref !== '') {
+                        stats.pota.activator_qso++;
+                        my_pota_ref.split(',').map(ref => ref.split('@')[0]).forEach(ref => {
+                            stats.pota.activated_parks.add(ref);
+                        });
+                    }
+
+                    if (
+                            (typeof pota_ref === 'string' && pota_ref !== '')
+                        &&
+                            (typeof my_pota_ref === 'string' && my_pota_ref !== '')
+                    ) {
+                        stats.pota.p2p_qso++;
+                    }
                 });
 
                 parser.addEventListener('done', e => {
