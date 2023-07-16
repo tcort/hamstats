@@ -3735,6 +3735,16 @@ function pota(stats) {
 
 }
 
+function sota(stats) {
+
+    $('#sota_chaser_qso').text(stats.sota.chaser_qso);
+    $('#sota_activator_qso').text(stats.sota.activator_qso);
+    $('#sota_s2s_qso').text(stats.sota.s2s_qso);
+    $('#sota_chased_summits').text(stats.sota.chased_summits.size);
+    $('#sota_activated_summits').text(stats.sota.activated_summits.size);
+
+}
+
 function plotIt(stats, adif_file, header, startTime) {
 
     while (charts.length > 0) {
@@ -3773,6 +3783,7 @@ function plotIt(stats, adif_file, header, startTime) {
     contests(stats);
     rst(stats);
     pota(stats);
+    sota(stats);
 }
 
 
@@ -3858,6 +3869,13 @@ $(function () {
                         activator_qso: 0,
                         activated_parks: new Set(),
                         p2p_qso: 0,
+                    },
+                    sota: {
+                        chaser_qso: 0,
+                        chased_summits: new Set(),
+                        activator_qso: 0,
+                        activated_summits: new Set(),
+                        s2s_qso: 0,
                     },
                 };
 
@@ -3976,6 +3994,27 @@ $(function () {
                             (typeof my_pota_ref === 'string' && my_pota_ref !== '')
                     ) {
                         stats.pota.p2p_qso++;
+                    }
+
+                    // SOTA
+                    const sota_ref = qso.SIG === 'SOTA' ? qso.SIG_INFO : qso.SOTA_REF;
+                    if (typeof sota_ref === 'string' && sota_ref !== '') {
+                        stats.sota.chaser_qso++;
+                        stats.sota.chased_summits.add(sota_ref);
+                    }
+
+                    const my_sota_ref = qso.MY_SIG === 'SOTA' ? qso.MY_SIG_INFO : qso.MY_SOTA_REF;
+                    if (typeof my_sota_ref === 'string' && my_sota_ref !== '') {
+                        stats.sota.activator_qso++;
+                        stats.sota.activated_summits.add(my_sota_ref);
+                    }
+
+                    if (
+                            (typeof sota_ref === 'string' && sota_ref !== '')
+                        &&
+                            (typeof my_sota_ref === 'string' && my_sota_ref !== '')
+                    ) {
+                        stats.sota.s2s_qso++;
                     }
                 });
 
