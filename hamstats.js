@@ -3938,13 +3938,14 @@ $(function () {
                         }
                     });
 
-                    switch (qso.DXCC) {
-                        case '1':
+                    switch (qso.COUNTRY) {
+                        case 'CANADA':
                             if (typeof qso.STATE === 'string' && qso.STATE !== '') {
                                 const oldValue = stats.places.canada.get(qso.STATE) ?? 0;
                                 stats.places.canada.set(qso.STATE, oldValue + 1);
                             }
-                        case '291':
+                            break;
+                        case 'UNITED STATES OF AMERICA':
                             if (typeof qso.STATE === 'string' && qso.STATE !== '') {
                                 const oldValue = stats.places.usa.get(qso.STATE) ?? 0;
                                 stats.places.usa.set(qso.STATE, oldValue + 1);
