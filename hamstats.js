@@ -783,7 +783,7 @@ $(function () {
                         const tx_pwr = parseFloat(qso.TX_PWR);
                         if (tx_pwr > 100) {
                             stats.tx_pwr.QRO++;
-                        } else if (tx_pwr > 5) {
+                        } else if ((tx_pwr > 10 && qso.MODE === 'SSB') || (tx_pwr > 5 && qso.MODE !== 'SSB')) {
                             stats.tx_pwr.LP++;
                         } else if (tx_pwr > 1) {
                             stats.tx_pwr.QRP++;
