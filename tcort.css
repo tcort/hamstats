@@ -15,7 +15,7 @@
  */
 
 /*
-    Version 2023.04.22a
+    Version 2023.10.01b
  */
 
 body {
@@ -24,20 +24,26 @@ body {
     text-align: left;
     line-height: 1.69;
     max-width: 69em;
-    margin: 32px auto;
     color: #454545;
     background: #f2f2f2;
-    padding-left: 2em;
-    padding-right: 2em;
+    margin: 0px auto;
 }
 
-header, section, footer {
-    background: #ffffff;
-    color: #454545;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: 1px solid;
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+nav li {
+    float: left;
+}
+
+nav li a {
+    display: block;
+    text-align: center;
+    padding: 0px 16px 0px 0px;
 }
 
 footer p {
@@ -46,6 +52,7 @@ footer p {
 
 h1, h2, h3 {
     line-height: 1.2345;
+    padding-top: 10px;
 }
 
 h1 {
@@ -100,6 +107,9 @@ tbody tr:hover {
     background-color: #aaaaaa;
 }
 
+input[type=url],
+input[type=number],
+input[type=email],
 input[type=file],
 input[type=text],
 input[type=button],
@@ -187,6 +197,18 @@ progress {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
+.center {
+    text-align: center;
+}
+
+.flex {
+    display: flex;
+}
+
 .spinner {
     border: 2.25em solid #aaaaaa;
     border-top: 2.25em solid #f2f2f2;
@@ -201,3 +223,4 @@ progress {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
