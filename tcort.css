@@ -15,7 +15,7 @@
  */
 
 /*
-    Version 2023.10.01b
+    Version 2023.10.02a
  */
 
 body {
@@ -23,10 +23,15 @@ body {
     font-size: 18px;
     text-align: left;
     line-height: 1.69;
-    max-width: 69em;
+    max-width: 69vw;
     color: #454545;
     background: #f2f2f2;
     margin: 0px auto;
+}
+
+header, footer, main {
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 nav ul {
