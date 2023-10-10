@@ -173,7 +173,7 @@ class HsPlugin {
     constructor(category) {
         this.category = category;
     }
-    init() {}
+    init(adif_file) {}
     processHeader(header) {}
     processQso(qso) {}
     render() { }
@@ -213,10 +213,10 @@ function hs_plugin_register(Plugin) {
     plugins.push(Plugin);
 }
 
-function hs_plugin_init() {
+function hs_plugin_init(adif_file) {
     hs_plugin_clear();
     plugins.forEach(Plugin => pluginInstances.push(new Plugin()));
-    pluginInstances.forEach(plugin => plugin.init());
+    pluginInstances.forEach(plugin => plugin.init(adif_file));
 }
 
 function hs_plugin_header(header) {
@@ -245,8 +245,6 @@ $(function () {
     $('#powered_by_link').attr('href', Version.homepage);
     $('#powered_by_version').text(Version.version);
 
-    hs_plugin_init();
-
     $('form[name="file-chooser"]').on('submit', e => {
         e.preventDefault();
 
@@ -264,6 +262,8 @@ $(function () {
         }
 
         const [ adif_file ] = files;
+
+        hs_plugin_init(adif_file);
 
         const chunks = [];
 

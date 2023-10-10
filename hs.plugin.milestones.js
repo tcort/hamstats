@@ -5,7 +5,7 @@ class MilestonesHsPlugin extends HsPlugin {
         super('Milestones');
     }
 
-    init() {
+    init(adif_file) {
         this.qsos = [];
     }
 
