@@ -207,6 +207,13 @@ class HsPlugin {
 
         return `${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`;
     }
+
+    tally(map, key) {
+        const oldCount = map.get(key);
+        const newCount = (oldCount ?? 0) + 1;
+        map.set(key, newCount);
+    }
+
 }
 
 function hs_plugin_register(Plugin) {

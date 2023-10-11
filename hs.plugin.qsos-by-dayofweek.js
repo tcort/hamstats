@@ -9,15 +9,9 @@ class QsoByDayOfWeekHsPlugin extends HsPlugin {
         this.daysOfWeek = new Map();
     }
 
-    #tally(map, key) {
-        const oldCount = map.get(key);
-        const newCount = (oldCount ?? 0) + 1;
-        map.set(key, newCount);
-    }
-
     processQso(qso) {
         const timestamp = moment(this.createTimestamp(qso.QSO_DATE, qso.TIME_ON)).utc();
-        this.#tally(this.daysOfWeek, timestamp.format('E'));
+        this.tally(this.daysOfWeek, timestamp.format('E'));
     }
 
     render() {

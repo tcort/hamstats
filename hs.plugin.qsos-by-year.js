@@ -9,16 +9,9 @@ class QsoByYearHsPlugin extends HsPlugin {
         this.years = new Map();
     }
 
-    #tally(map, key) {
-        const oldCount = map.get(key);
-        const newCount = (oldCount ?? 0) + 1;
-        map.set(key, newCount);
-    }
-
     processQso(qso) {
         const timestamp = moment(this.createTimestamp(qso.QSO_DATE, qso.TIME_ON)).utc();
-
-        this.#tally(this.years, timestamp.format('YYYY'));
+        this.tally(this.years, timestamp.format('YYYY'));
     }
 
     render() {
