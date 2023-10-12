@@ -44,19 +44,19 @@
 
         <title>Ham Stats - Online Amateur Radio Log File Analyzer</title>
 
-        <link rel="icon" href="favicon.ico?1">
-        <link rel="apple-touch-icon" href="hamstats-logo-apple-icon.png?1">
+        <link rel="icon" href="favicon.ico">
+        <link rel="apple-touch-icon" href="hamstats-logo-apple-icon.png">
 
-        <link rel="stylesheet" href="tcort.css?6">
-        <link rel="stylesheet" href="robotomono-regular.css?1">
-        <link rel="stylesheet" href="hamstats.css?4">
+        <link rel="stylesheet" href="tcort.css">
+        <link rel="stylesheet" href="robotomono-regular.css">
+        <link rel="stylesheet" href="hamstats.css">
 
         <link rel="canonical" href="https://www.hamstats.com/">
 
     </head>
     <body>
         <header>
-            <img id="logo" height="64" width="64" src="hamstats-logo-little.png?1" alt="cartoon pig holding a calculator">
+            <img id="logo" height="64" width="64" src="hamstats-logo-little.png" alt="cartoon pig holding a calculator">
             <h1 id="name">Ham Stats</h1>
             <p id="about">
                 Gain insight into your amateur radio logs with this powerful ham radio log analyzer. This tool is free and all computations run in the browser. No data is sent to the server.
@@ -66,6 +66,7 @@
                 <em>Powered by <a id="powered_by_link" href="#"></a> <span id="powered_by_version"></span></em>
             </p>
         </header>
+
         <main>
             <section>
                 <div id="file-chooser">
@@ -79,295 +80,33 @@
                 <div id="spinner" class=""></div>
                 <div id="error"></div>
             </section>
+
             <div id="results" class="hidden">
-                <section>
-                    <h2>General</h2>
-                    <div class="cards">
-                        <div class="card">
-                            <h3>ADIF File</h3>
-                            <table>
-                                <tr>
-                                    <th>Size</th>
-                                    <td><span id="adif_filesize"></span> bytes</td>
-                                </tr>
-                                <tr>
-                                    <th>QSOs</th>
-                                    <td><span id="nqso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>First QSO</th>
-                                    <td><span id="date_first_qso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Last QSO</th>
-                                    <td><span id="date_last_qso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Created by</th>
-                                    <td><span id="header_progname"></span> v<span id="header_progver"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Processing time</th>
-                                    <td><span id="runtime"></span> seconds</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="card">
-                            <h3>Callsigns</h3>
-                            <table>
-                                <tr>
-                                    <th>Unique Callsigns</th>
-                                    <td><span id="unique_call"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Unique Prefixes</th>
-                                    <td><span id="unique_pfx"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Most Common Callsign</th>
-                                    <td><span id="most_common_call"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Most Common Prefix</th>
-                                    <td><span id="most_common_pfx"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Average Callsign Length</th>
-                                    <td><span id="avg_len_call"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Signals</h2>
-                    <div class="cards">
-                        <div class="card">
-                            <h3>Average Signal Report</h3>
-                            <table>
-                                <tr>
-                                    <th>Readability (Sent)</th>
-                                    <td><span id="r_sent"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Strength (Sent)</th>
-                                    <td><span id="s_sent"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Readability (Rcvd)</th>
-                                    <td><span id="r_rcvd"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Strength (Rcvd)</th>
-                                    <td><span id="s_rcvd"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="card">
-                            <h3>Bands</h3>
-                            <canvas id="band"></canvas>
-                        </div>
-                        <div class="card">
-                            <h3>Modes</h3>
-                            <canvas id="mode"></canvas>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Hardware</h2>
-                    <div class="cards">
-                        <div class="card">
-                            <h3>Rigs</h3>
-                            <canvas id="my_rig"></canvas>
-                        </div>
-                        <div class="card">
-                            <h3>Antennas</h3>
-                            <canvas id="my_antenna"></canvas>
-                        </div>
-                        <div class="card">
-                            <h3>Power</h3>
-                            <canvas id="tx_pwr"></canvas>
-                        </div>
-                </section>
-                <section>
-                    <h2>Contesting</h2>
-                    <div class="cards">
-                        <div class="card">
-                            <h3>Contest QSOs</h3>
-                            <table>
-                                <tbody id="contests">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>QSOs over Time</h2>
-                    <div class="cards">
-                        <div class="card">
-                            <h3>Years</h3>
-                            <canvas id="year"></canvas>
-                        </div>
-                        <div class="card">
-                            <h3>Months of Year</h3>
-                            <canvas id="month"></canvas>
-                        </div>
-                        <div class="card">
-                            <h3>Day of Week</h3>
-                            <canvas id="isoWeekday"></canvas>
-                        </div>
-                        <div class="card">
-                            <h3>Time of Day</h3>
-                            <canvas id="hour"></canvas>
-                        </div>
-                        <div class="card">
-                            <h3>QSO Rates</h3>
-                            <table>
-                                <tr>
-                                    <th>Per Hour</th>
-                                    <td><span id="rate_per_hour"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Per Day</th>
-                                    <td><span id="rate_per_day"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Per Month</th>
-                                    <td><span id="rate_per_month"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Per Year</th>
-                                    <td><span id="rate_per_year"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Locations</h2>
-                    <div class="cards">
-                        <div class="card">
-                            <h3>Stations Worked</h3>
-                            <table>
-                                <tr>
-                                    <th>DXCC Entities</th>
-                                    <td><span id="ndxcc"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Gridsquares</th>
-                                    <td><span id="ngrid"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>ITU Zones</th>
-                                    <td><span id="nituz"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>CQ Zones</th>
-                                    <td><span id="ncqz"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>States (USA)</th>
-                                    <td><span id="nusa"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Counties (USA)</th>
-                                    <td><span id="nusacnty"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Provinces (Canada)</th>
-                                    <td><span id="ncanada"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Shortest Distance</th>
-                                    <td><span id="dist_closest"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Average Distance</th>
-                                    <td><span id="dist_average"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Longest Distance</th>
-                                    <td><span id="dist_furthest"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="card">
-                            <h3>United States</h3>
-                            <div id="usmap"></div>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Awards Programs</h2>
-                    <div class="cards">
-                        <div class="card">
-                            <h3>Parks on the Air</h3>
-                            <table>
-                                <tr>
-                                    <th>Hunter QSOs</th>
-                                    <td><span id="pota_hunter_qso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Activator QSOs</th>
-                                    <td><span id="pota_activator_qso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Park-to-Park QSOs</th>
-                                    <td><span id="pota_p2p_qso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Hunted Parks</th>
-                                    <td><span id="pota_hunted_parks"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Activated Parks</th>
-                                    <td><span id="pota_activated_parks"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="card">
-                            <h3>Summits on the Air</h3>
-                            <table>
-                                <tr>
-                                    <th>Chaser QSOs</th>
-                                    <td><span id="sota_chaser_qso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Activator QSOs</th>
-                                    <td><span id="sota_activator_qso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Summit-to-Summit QSOs</th>
-                                    <td><span id="sota_s2s_qso"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Chased Summits</th>
-                                    <td><span id="sota_chased_summits"></span></td>
-                                </tr>
-                                <tr>
-                                    <th>Activated Summits</th>
-                                    <td><span id="sota_activated_summits"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
             </div>
         </main>
 
         <footer>
             <p>
-                Copyright &copy; 2023 Thomas Cort (<a href="https://www.va2nw.ca">VA2NW</a>)
+                <small>
+                    Copyright &copy; 2023 Thomas Cort (<a href="https://www.va2nw.ca">VA2NW</a>)
+                </small>
             </p>
         </footer>
 
-        <script src="tcadif.js?2"></script>
-        <script src="raphael.js?1"></script>
-        <script src="jquery.min.js?1"></script>
-        <script src="color.jquery.js?1"></script>
-        <script src="jquery.usmap.js?1"></script>
-        <script src="moment.js?1"></script>
-        <script src="chart.umd.js?1"></script>
-        <script src="hamstats.js?9"></script>
-        <script src="tcort.js?1"></script>
+        <script src="tcadif.js"></script>
+        <script src="jquery.min.js"></script>
+        <script src="moment.js"></script>
+        <script src="hamstats.js"></script>
+        <script src="hs.plugin.fileinfo.js"></script>
+        <script src="hs.plugin.qrates.js"></script>
+        <script src="hs.plugin.milestones.js"></script>
+        <script src="hs.plugin.frequentcallers.js"></script>
+        <script src="hs.plugin.qsos-by-band.js"></script>
+        <script src="hs.plugin.qsos-by-mode.js"></script>
+        <script src="hs.plugin.qsos-by-year.js"></script>
+        <script src="hs.plugin.qsos-by-month.js"></script>
+        <script src="hs.plugin.qsos-by-dayofweek.js"></script>
+        <script src="hs.plugin.qsos-by-hour.js"></script>
+        <script src="tcort.js"></script>
     </body>
 </html>
