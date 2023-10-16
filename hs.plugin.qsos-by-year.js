@@ -25,15 +25,20 @@ class QsoByYearHsPlugin extends HsPlugin {
         const yearThead = document.createElement('thead');
         yearThead.appendChild(this.createTaggedText('th', 'Year'));
         yearThead.appendChild(this.createTaggedText('th', 'Count'));
+        yearThead.appendChild(this.createTaggedText('th', 'Percent'));
 
         const yearTbody = document.createElement('tbody');
 
         for (let year = parseInt(years[0][0]); years.length > 0 && year <= parseInt(years[years.length - 1][0]); year += 1) {
             const result = years.find(entry => entry[0] === `${year}`);
 
+            const count = result ? result[1] : 0;
+            const percent = this.getPercent(this.years, count);
+
             const tr = document.createElement('tr');
             tr.appendChild(this.createTaggedText('td', `${year}`));
-            tr.appendChild(this.createTaggedText('td', result ? result[1] : '0'));
+            tr.appendChild(this.createTaggedText('td', count));
+            tr.appendChild(this.createTaggedText('td', percent));
             yearTbody.appendChild(tr);
         }
 

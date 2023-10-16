@@ -19,6 +19,7 @@ class QsoByModeHsPlugin extends HsPlugin {
         const modeThead = document.createElement('thead');
         modeThead.appendChild(this.createTaggedText('th', 'Mode'));
         modeThead.appendChild(this.createTaggedText('th', 'Count'));
+        modeThead.appendChild(this.createTaggedText('th', 'Percent'));
 
         const modeTbody = document.createElement('tbody');
         Object.entries(tcadif.enums.Mode).forEach(([ mode, info ]) => {
@@ -27,9 +28,12 @@ class QsoByModeHsPlugin extends HsPlugin {
                 return;
             }
 
+            const percent = this.getPercent(this.modes, count);
+
             const tr = document.createElement('tr');
             tr.appendChild(this.createTaggedText('td', mode));
             tr.appendChild(this.createTaggedText('td', count));
+            tr.appendChild(this.createTaggedText('td', percent));
             modeTbody.appendChild(tr);
         });
 

@@ -20,6 +20,7 @@ class FrequentCallersHsPlugin extends HsPlugin {
         const thead = document.createElement('thead');
         thead.appendChild(this.createTaggedText('th', 'Callsign'));
         thead.appendChild(this.createTaggedText('th', 'Number of QSOs'));
+        thead.appendChild(this.createTaggedText('th', 'Percent'));
 
         const tbody = document.createElement('tbody');
 
@@ -31,8 +32,11 @@ class FrequentCallersHsPlugin extends HsPlugin {
 
             const tr = document.createElement('tr');
 
+            const percent = this.getPercent(this.counts, count);
+
             tr.appendChild(this.createTaggedText('td', `${call}`));
             tr.appendChild(this.createTaggedText('td', `${count}`));
+            tr.appendChild(this.createTaggedText('td', `${percent}`));
 
             tbody.appendChild(tr);
         });

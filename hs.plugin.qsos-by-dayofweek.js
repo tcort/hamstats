@@ -25,6 +25,7 @@ class QsoByDayOfWeekHsPlugin extends HsPlugin {
         const dayThead = document.createElement('thead');
         dayThead.appendChild(this.createTaggedText('th', 'Day of Week'));
         dayThead.appendChild(this.createTaggedText('th', 'Count'));
+        dayThead.appendChild(this.createTaggedText('th', 'Percent'));
 
         const dayTbody = document.createElement('tbody');
 
@@ -32,9 +33,13 @@ class QsoByDayOfWeekHsPlugin extends HsPlugin {
 
             const result = weekdays.find(entry => entry[0] === `${index + 1}`);
 
+            const count = result ? result[1] : 0;
+            const percent = this.getPercent(this.daysOfWeek, count);
+
             const tr = document.createElement('tr');
             tr.appendChild(this.createTaggedText('td', day));
-            tr.appendChild(this.createTaggedText('td', result ? result[1] : '0'));
+            tr.appendChild(this.createTaggedText('td', count));
+            tr.appendChild(this.createTaggedText('td', percent));
             dayTbody.appendChild(tr);
         });
 

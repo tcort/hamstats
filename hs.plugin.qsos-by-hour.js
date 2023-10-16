@@ -25,6 +25,7 @@ class QsoByHourHsPlugin extends HsPlugin {
         const hourThead = document.createElement('thead');
         hourThead.appendChild(this.createTaggedText('th', 'Hour of Day'));
         hourThead.appendChild(this.createTaggedText('th', 'Count'));
+        hourThead.appendChild(this.createTaggedText('th', 'Percent'));
 
         const hourTbody = document.createElement('tbody');
 
@@ -32,9 +33,13 @@ class QsoByHourHsPlugin extends HsPlugin {
 
             const result = hours.find(entry => entry[0] === `${hour}`.padStart(2, '0'));
 
+            const count = result ? result[1] : 0;
+            const percent = this.getPercent(this.hours, count);
+
             const tr = document.createElement('tr');
             tr.appendChild(this.createTaggedText('td', `${hour}`.padStart(2, '0')));
-            tr.appendChild(this.createTaggedText('td', result ? result[1] : '0'));
+            tr.appendChild(this.createTaggedText('td', count));
+            tr.appendChild(this.createTaggedText('td', percent));
             hourTbody.appendChild(tr);
         }
 

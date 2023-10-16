@@ -25,6 +25,7 @@ class QsoByMonthHsPlugin extends HsPlugin {
         const monthThead = document.createElement('thead');
         monthThead.appendChild(this.createTaggedText('th', 'Month of Year'));
         monthThead.appendChild(this.createTaggedText('th', 'Count'));
+        monthThead.appendChild(this.createTaggedText('th', 'Percent'));
 
         const monthTbody = document.createElement('tbody');
 
@@ -32,9 +33,13 @@ class QsoByMonthHsPlugin extends HsPlugin {
 
             const result = months.find(entry => entry[0] === `${index + 1}`.padStart(2, '0'));
 
+            const count = result ? result[1] : 0;
+            const percent = this.getPercent(this.months, count);
+
             const tr = document.createElement('tr');
             tr.appendChild(this.createTaggedText('td', month));
-            tr.appendChild(this.createTaggedText('td', result ? result[1] : '0'));
+            tr.appendChild(this.createTaggedText('td', count));
+            tr.appendChild(this.createTaggedText('td', percent));
             monthTbody.appendChild(tr);
         });
 

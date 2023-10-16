@@ -214,6 +214,10 @@ class HsPlugin {
         map.set(key, newCount);
     }
 
+    getPercent(map, count) {
+        const total = [...(map.values())].reduce((result, val) => result + val, 0);
+        return (100.0 * (count * 1.0 / total * 1.0)).toFixed(2) + '%';
+    }
 }
 
 function hs_plugin_register(Plugin) {
