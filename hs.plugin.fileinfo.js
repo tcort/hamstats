@@ -52,6 +52,8 @@ class FileInfoHsPlugin extends HsPlugin {
 
         const tbody = document.createElement('tbody');
 
+        const processingTime = parseFloat(((this.runtime_ms)/1000).toFixed(2));
+
         [
             ['Name', `${this.fileName}`],
             ['Size', `${this.fileSize} bytes`],
@@ -59,7 +61,8 @@ class FileInfoHsPlugin extends HsPlugin {
             ['First QSO', `${moment(this.firstQso).utc().format('YYYY-MM-DD HH:mm:ss')}`],
             ['Last QSO', `${moment(this.lastQso).utc().format('YYYY-MM-DD HH:mm:ss')}`],
             ['Created by', `${this.appName} v${this.appVersion}`],
-            ['Processing time', `${((this.runtime_ms)/1000).toFixed(2)} seconds`],
+            ['Processing time', `${processingTime} seconds`],
+            ['Processing speed', `${((this.nqso * 1.0) / processingTime).toFixed(2)} QSOs per seconds`],
         ].forEach(([key, value]) => {
             const tr = document.createElement('tr');
             tr.appendChild(this.createTaggedText('td', key));
