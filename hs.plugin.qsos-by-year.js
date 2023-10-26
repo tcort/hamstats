@@ -16,6 +16,8 @@ class QsoByYearHsPlugin extends HsPlugin {
 
     render() {
 
+        const stats_table = this.createStatsTable([...this.years.values()]);
+
         const years = [...this.years.entries()].sort((a, b) => {
             const [ a_year, a_count ] = a;
             const [ b_year, b_count ] = b;
@@ -48,6 +50,7 @@ class QsoByYearHsPlugin extends HsPlugin {
 
         const yearCard = document.createElement('div');
         yearCard.classList.add('card');
+        yearCard.appendChild(stats_table);
         yearCard.appendChild(yearTable);
 
         const yearSection = this.createSection('QSOs by Year', yearCard);

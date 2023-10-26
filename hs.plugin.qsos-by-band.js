@@ -16,6 +16,8 @@ class QsoByBandHsPlugin extends HsPlugin {
     render() {
         const tcadif = require('tcadif');
 
+        const stats_table = this.createStatsTable([...this.bands.values()]);
+
         const bandThead = document.createElement('thead');
         bandThead.appendChild(this.createTaggedText('th', 'Band'));
         bandThead.appendChild(this.createTaggedText('th', 'Count'));
@@ -43,6 +45,7 @@ class QsoByBandHsPlugin extends HsPlugin {
 
         const bandCard = document.createElement('div');
         bandCard.classList.add('card');
+        bandCard.appendChild(stats_table);
         bandCard.appendChild(bandTable);
 
         const bandSection = this.createSection('QSOs by Band', bandCard);

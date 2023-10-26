@@ -16,6 +16,8 @@ class QsoByHourHsPlugin extends HsPlugin {
 
     render() {
 
+        const stats_table = this.createStatsTable([...this.hours.values()]);
+
         const hours = [...this.hours.entries()].sort((a, b) => {
             const [ a_hour, a_count ] = a;
             const [ b_hour, b_count ] = b;
@@ -49,6 +51,7 @@ class QsoByHourHsPlugin extends HsPlugin {
 
         const hourCard = document.createElement('div');
         hourCard.classList.add('card');
+        hourCard.appendChild(stats_table);
         hourCard.appendChild(hourTable);
 
         const hourSection = this.createSection('QSOs by Hour of Day', hourCard);

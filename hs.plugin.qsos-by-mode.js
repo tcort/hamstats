@@ -16,6 +16,8 @@ class QsoByModeHsPlugin extends HsPlugin {
     render() {
         const tcadif = require('tcadif');
 
+        const stats_table = this.createStatsTable([...this.modes.values()]);
+
         const modeThead = document.createElement('thead');
         modeThead.appendChild(this.createTaggedText('th', 'Mode'));
         modeThead.appendChild(this.createTaggedText('th', 'Count'));
@@ -43,6 +45,7 @@ class QsoByModeHsPlugin extends HsPlugin {
 
         const modeCard = document.createElement('div');
         modeCard.classList.add('card');
+        modeCard.appendChild(stats_table);
         modeCard.appendChild(modeTable);
 
         const modeSection = this.createSection('QSOs by Mode', modeCard);

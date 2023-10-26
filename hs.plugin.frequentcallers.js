@@ -17,6 +17,8 @@ class FrequentCallersHsPlugin extends HsPlugin {
 
     render() {
 
+        const stats_table = this.createStatsTable([...this.counts.values()]);
+
         const thead = document.createElement('thead');
         thead.appendChild(this.createTaggedText('th', 'Callsign'));
         thead.appendChild(this.createTaggedText('th', 'Number of QSOs'));
@@ -47,6 +49,7 @@ class FrequentCallersHsPlugin extends HsPlugin {
 
         const card = document.createElement('div');
         card.classList.add('card');
+        card.appendChild(stats_table);
         card.appendChild(table);
 
         const section = this.createSection('Frequent Callers', card);

@@ -223,6 +223,31 @@ class HsPlugin {
         return { min, max, median, mean };
     }
 
+    createStatsTable(map) {
+        const stats = this.stats(map);
+
+        const stats_thead = document.createElement('thead');
+        stats_thead.appendChild(this.createTaggedText('th', 'Min'));
+        stats_thead.appendChild(this.createTaggedText('th', 'Median'));
+        stats_thead.appendChild(this.createTaggedText('th', 'Max'));
+        stats_thead.appendChild(this.createTaggedText('th', 'Mean'));
+
+        const stats_tbody = document.createElement('tbody');
+
+        const stats_tr = document.createElement('tr');
+        stats_tr.appendChild(this.createTaggedText('td', stats.min));
+        stats_tr.appendChild(this.createTaggedText('td', stats.median));
+        stats_tr.appendChild(this.createTaggedText('td', stats.max));
+        stats_tr.appendChild(this.createTaggedText('td', stats.mean));
+        stats_tbody.appendChild(stats_tr);
+
+        const stats_table = document.createElement('table');
+        stats_table.appendChild(stats_thead);
+        stats_table.appendChild(stats_tbody);
+
+        return stats_table;
+    }
+
     getPercent(map, count) {
         const total = [...(map.values())].reduce((result, val) => result + val, 0);
         return (100.0 * (count * 1.0 / total * 1.0)).toFixed(2) + '%';

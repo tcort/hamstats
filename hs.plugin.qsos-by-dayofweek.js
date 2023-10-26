@@ -16,6 +16,8 @@ class QsoByDayOfWeekHsPlugin extends HsPlugin {
 
     render() {
 
+        const stats_table = this.createStatsTable([...this.daysOfWeek.values()]);
+
         const weekdays = [...this.daysOfWeek.entries()].sort((a, b) => {
             const [ a_day, a_count ] = a;
             const [ b_day, b_count ] = b;
@@ -49,6 +51,7 @@ class QsoByDayOfWeekHsPlugin extends HsPlugin {
 
         const dayCard = document.createElement('div');
         dayCard.classList.add('card');
+        dayCard.appendChild(stats_table);
         dayCard.appendChild(dayTable);
 
         const daySection = this.createSection('QSOs by Day of Week', dayCard);

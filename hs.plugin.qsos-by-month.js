@@ -16,6 +16,8 @@ class QsoByMonthHsPlugin extends HsPlugin {
 
     render() {
 
+        const stats_table = this.createStatsTable([...this.months.values()]);
+
         const months = [...this.months.entries()].sort((a, b) => {
             const [ a_month, a_count ] = a;
             const [ b_month, b_count ] = b;
@@ -49,6 +51,7 @@ class QsoByMonthHsPlugin extends HsPlugin {
 
         const monthCard = document.createElement('div');
         monthCard.classList.add('card');
+        monthCard.appendChild(stats_table);
         monthCard.appendChild(monthTable);
 
         const monthSection = this.createSection('QSOs by Month of Year', monthCard);

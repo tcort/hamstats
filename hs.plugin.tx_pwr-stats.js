@@ -32,26 +32,7 @@ class TxPwrStatsHsPlugin extends HsPlugin {
 
     render() {
 
-        const stats = this.stats(this.tx_pwr);
-
-        const stats_thead = document.createElement('thead');
-        stats_thead.appendChild(this.createTaggedText('th', 'Min'));
-        stats_thead.appendChild(this.createTaggedText('th', 'Median'));
-        stats_thead.appendChild(this.createTaggedText('th', 'Max'));
-        stats_thead.appendChild(this.createTaggedText('th', 'Mean'));
-
-        const stats_tbody = document.createElement('tbody');
-
-        const stats_tr = document.createElement('tr');
-        stats_tr.appendChild(this.createTaggedText('td', stats.min));
-        stats_tr.appendChild(this.createTaggedText('td', stats.median));
-        stats_tr.appendChild(this.createTaggedText('td', stats.max));
-        stats_tr.appendChild(this.createTaggedText('td', stats.mean));
-        stats_tbody.appendChild(stats_tr);
-
-        const stats_table = document.createElement('table');
-        stats_table.appendChild(stats_thead);
-        stats_table.appendChild(stats_tbody);
+        const stats_table = this.createStatsTable(this.tx_pwr);
 
         const tally_thead = document.createElement('thead');
         tally_thead.appendChild(this.createTaggedText('th', 'Power Level'));
