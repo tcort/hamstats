@@ -235,10 +235,10 @@ class HsPlugin {
         const stats_tbody = document.createElement('tbody');
 
         const stats_tr = document.createElement('tr');
-        stats_tr.appendChild(this.createTaggedText('td', stats.min));
-        stats_tr.appendChild(this.createTaggedText('td', stats.median));
-        stats_tr.appendChild(this.createTaggedText('td', stats.max));
-        stats_tr.appendChild(this.createTaggedText('td', stats.mean));
+        stats_tr.appendChild(this.createTaggedText('td', stats.min.toFixed(2)));
+        stats_tr.appendChild(this.createTaggedText('td', stats.median.toFixed(2)));
+        stats_tr.appendChild(this.createTaggedText('td', stats.max.toFixed(2)));
+        stats_tr.appendChild(this.createTaggedText('td', stats.mean.toFixed(2)));
         stats_tbody.appendChild(stats_tr);
 
         const stats_table = document.createElement('table');

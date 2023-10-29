@@ -30,7 +30,7 @@ class FrequentCallersHsPlugin extends HsPlugin {
             const [ a_call, a_count ] = a;
             const [ b_call, b_count ] = b;
             return b_count - a_count;
-        }).slice(0, 10).forEach(([ call, count ]) => {
+        }).slice(0, 25).forEach(([ call, count ]) => {
 
             const tr = document.createElement('tr');
 
