@@ -30,6 +30,7 @@ class LongDistanceHsPlugin extends HsPlugin {
         thead.appendChild(this.createTaggedText('th', 'Date'));
         thead.appendChild(this.createTaggedText('th', 'Callsign'));
         thead.appendChild(this.createTaggedText('th', 'Band'));
+        thead.appendChild(this.createTaggedText('th', 'Mode'));
         thead.appendChild(this.createTaggedText('th', 'Distance'));
 
         const tbody = document.createElement('tbody');
@@ -41,6 +42,7 @@ class LongDistanceHsPlugin extends HsPlugin {
             tr.appendChild(this.createTaggedText('td', `${this.createTimestamp(qso.QSO_DATE, qso.TIME_ON)}`));
             tr.appendChild(this.createTaggedText('td', `${qso.CALL}`));
             tr.appendChild(this.createTaggedText('td', `${qso.BAND}`));
+            tr.appendChild(this.createTaggedText('td', `${qso.MODE}`));
             tr.appendChild(this.createTaggedText('td', `${distance.toFixed(2)}`));
 
             tbody.appendChild(tr);
