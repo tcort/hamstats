@@ -26,7 +26,11 @@ class DxccHsPlugin extends HsPlugin {
 
         const tally_tbody = document.createElement('tbody');
 
-        Object.entries(tcadif.enums.Dxcc).forEach(([ dxcc, label ]) => {
+        Object.entries(tcadif.enums.Dxcc).sort((a,b) => {
+            if (a[1] < b[1]) return -1;
+            else if (a[1] > b[1]) return 1;
+            else return 0;
+        }).forEach(([ dxcc, label ]) => {
 
             const count = this.dxcc.get(dxcc);
             if (!count) {
