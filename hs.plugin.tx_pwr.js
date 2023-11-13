@@ -1,8 +1,8 @@
 'use strict';
 
-class TxPwrStatsHsPlugin extends HsPlugin {
+class TxPwrHsPlugin extends HsPlugin {
     constructor() {
-        super('Transmit Power Statistics');
+        super('Transmit Power');
     }
 
     init(adif_file) {
@@ -63,7 +63,7 @@ class TxPwrStatsHsPlugin extends HsPlugin {
         card.appendChild(stats_table);
         card.appendChild(tally_table);
 
-        const section = this.createSection('Transmit Power Statistics', card);
+        const section = this.createSection('Transmit Power', card);
 
         const results = document.getElementById('results');
         results.appendChild(section);
@@ -76,4 +76,4 @@ class TxPwrStatsHsPlugin extends HsPlugin {
     }
 }
 
-hs_plugin_register(TxPwrStatsHsPlugin);
+hs_plugin_register(TxPwrHsPlugin);
