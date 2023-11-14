@@ -14,7 +14,8 @@ class AwardsHsPlugin extends HsPlugin {
     processQso(qso) {
         this.fields.forEach((field, i) => {
             if (typeof qso[field] === 'string' && qso[field].length > 0) {
-                this.values[i].add(qso[field]);
+                const value = field === 'GRIDSQUARE' ? qso[field].slice(0,4) : qso[field];
+                this.values[i].add(value);
             }
         });
     }
