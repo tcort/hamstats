@@ -52,7 +52,7 @@ class FrequentGridsHsPlugin extends HsPlugin {
         gridCard.appendChild(stats_table);
         gridCard.appendChild(gridTable);
 
-        const gridSection = this.createSection('Frequent Grid Square', gridCard);
+        const gridSection = this.createSection('Frequent Grid Squares', gridCard);
 
         const results = document.getElementById('results');
         results.appendChild(gridSection);
