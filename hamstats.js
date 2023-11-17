@@ -214,6 +214,12 @@ class HsPlugin {
         map.set(key, newCount);
     }
 
+    tallyUniqueKeyValues(map, key, value) {
+        const set = map.get(key) ?? new Set();
+        set.add(value);
+        map.set(key, set);
+    }
+
     stats(arr) {
         const values = arr.sort((a, b) => a - b);
         const min = values[0];
