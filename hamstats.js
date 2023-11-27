@@ -222,9 +222,9 @@ class HsPlugin {
 
     stats(arr) {
         const values = arr.sort((a, b) => a - b);
-        const min = values[0];
-        const max = values[values.length - 1];
-        const median = values[Math.floor(values.length / 2)];
+        const min = values[0] ?? 0;
+        const max = values[values.length - 1] ?? 0;
+        const median = values[Math.floor(values.length / 2)] ?? 0;
         const mean = parseFloat(((1.0 * values.reduce((result, val) => result + val, 0)) / (1.0 * values.length)).toFixed(2));
         return { min, max, median, mean };
     }
